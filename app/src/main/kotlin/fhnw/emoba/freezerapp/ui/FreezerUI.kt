@@ -1,31 +1,82 @@
 package fhnw.emoba.freezerapp.ui
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import fhnw.emoba.freezerapp.model.FreezerModel
+import fhnw.emoba.freezerapp.model.Screen
+import fhnw.emoba.freezerapp.ui.screens.*
+import fhnw.emoba.freezerapp.ui.screens.tabs.TabsScreen
 
 
 @Composable
-fun AppUI(model : FreezerModel){
-    with(model){
-        Box(contentAlignment = Alignment.Center,
-            modifier         = Modifier.fillMaxSize()
-        ){
-            Text(text  = title,
-                 style = TextStyle(fontSize = 42.sp))
+fun FreezerUI(model: FreezerModel) {
+    MaterialTheme {
+        Scaffold(
+            floatingActionButton = { FAB(model) },
+            floatingActionButtonPosition = FabPosition.End,
+            content = { },
+        )
+
+            Crossfade(targetState = model.currentScreen) { screen ->
+                when (screen) {
+                    Screen.HOMESCREEN -> {
+                        HomeScreen(text = "Home")
+                    }
+                    Screen.TABSCREEN -> {
+                        TabsScreen(model = model)
+                    }
+
+                    Screen.PLAYERSCREEN -> {
+                        PlayerScreen( model = model)
+                    }
+
+
+                }
+
+
+
         }
+
     }
 }
 
-@Preview
+
+
+
+
+
+
 @Composable
-fun Preview(){
-    AppUI(FreezerModel)
+private fun FAB(model: FreezerModel) {
+    FloatingActionButton(onClick = { model.currentScreen = Screen.TABSCREEN })
+    { Icon(Icons.Filled.Search, "Search") }
+
 }
+
+@Composable
+fun MessageBox(text: String) {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.h3
+        )
+    }
+}
+
+
+
+
+
+
+
+

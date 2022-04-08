@@ -16,7 +16,11 @@ interface DeezerService {
 
     fun requestImage(url: String): ImageBitmap
 
-    //fun searchAlbum(searchText: String) : List<Album>
+    fun requestAlbum(searchText: String) : List<Album>
 
-    //fun searchRadio() : List<Radio>
+    fun requestAlbumSongs(album: Album,tracklist: String): List<Song>
+
+    fun requestRatio(): List<Radio>
+
+    fun requestRadioSongs(radio: Radio, tracklist: String): List<Song>
 }

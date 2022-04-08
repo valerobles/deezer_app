@@ -1,7 +1,6 @@
 package fhnw.emoba.freezerapp.ui.screens.tabs
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,10 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.model.Tab
@@ -52,16 +48,14 @@ private fun Body(model: FreezerModel){
             Crossfade(targetState = model.currentTab) { tab ->
                 when (tab) {
                     Tab.ALBUMSTAB -> {
-                        AlbumsScreen(model = model)
+                        AlbumsSearchScreen(model = model)
                     }
-                    Tab.HITSTAB -> {
-                        HitsScreen(text = "Hi")
-                    }
+
                     Tab.RADIOTAB -> {
-                        RadioScreen(text = "Radio")
+                        RadioScreen(model = model)
                     }
                     Tab.SONGSTAB -> {
-                        BodyList(model = model)
+                        SongScreen(model = model)
                     }
                 }
 

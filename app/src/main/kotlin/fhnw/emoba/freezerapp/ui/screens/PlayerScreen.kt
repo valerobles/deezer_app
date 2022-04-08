@@ -67,10 +67,11 @@ private fun Body(song: Song, model: FreezerModel){
                 Modifier
                     .padding(10.dp)
                     .clip(RoundedCornerShape(15.dp)),
+
                 Alignment.Center
 
             ) {
-                Image(albumImage,"")
+                Image(albumImage,"",modifier = Modifier.size(230.dp))
             }
             Spacer(Modifier.height(12.dp))
 
@@ -113,8 +114,8 @@ private fun Body(song: Song, model: FreezerModel){
                 Modifier.fillMaxWidth(),
                 Arrangement.SpaceEvenly,
             ) {
-                IconButton(onClick = { }) { // replayFromStart() }
-                    Icon(Icons.Filled.Repeat, "",
+                IconButton(onClick = { }) { // add to favourites list }
+                    Icon(Icons.Filled.ThumbUp, "",
                     )
                 }
             }

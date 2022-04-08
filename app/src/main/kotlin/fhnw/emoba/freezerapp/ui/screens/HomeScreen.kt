@@ -1,7 +1,6 @@
 package fhnw.emoba.freezerapp.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -12,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
 
-import fhnw.emoba.freezerapp.ui.searchFAB
 
 
 @Composable
@@ -20,7 +18,10 @@ fun HomeScreen(model: FreezerModel) {
     MaterialTheme {
         Scaffold(
             topBar = {Bar(model.title) },
-            floatingActionButton = { searchFAB(model) },
+            bottomBar = {if (model.playerMode)
+                             CurrentSongPane(model = model)   },
+            floatingActionButton = {
+                LibSearchFab(model) },
             floatingActionButtonPosition = FabPosition.End,
             content = {Body(model.listOfSongs,model) },
         )
@@ -32,7 +33,7 @@ private fun Body(list: List<Song>,model: FreezerModel) {
     with(model) {
         when {
             isLoading -> LoadingBox("Songs are being loaded")
-            else -> allSongs(songs = list, model = model)
+            else -> HomeBody(model = model)
         }
     }
 
@@ -42,28 +43,41 @@ private fun Body(list: List<Song>,model: FreezerModel) {
 }
 
 @Composable
-private fun allSongs(songs: List<Song>, model: FreezerModel){
-    Column(
-        Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()) {
-        Spacer(Modifier.height(50.dp))
-        Text(text = "Artists recommended to you")
-        LazyRow{
-            items(songs) {
-                ArtistPane(song = it, model = model)
+private fun HomeBody(model: FreezerModel){
+    with(model){
+        Column(
+            Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()) {
+            Spacer(Modifier.height(50.dp))
+            Text(text = "Artists recommended to you")
+            LazyRow{
+                items(listOfSongs) {
+                    ArtistPane(song = it, model = model)
+                }
+
+            }
+            Spacer(Modifier.height(50.dp))
+            Text(text = "Your favourite songs")
+            LazyRow{
+                items(listOfSongs) {
+                    SongPane(song = it, model = model)
+                }
+
+            }
+            Spacer(Modifier.height(50.dp))
+            Text(text = "Radio Stations")
+            LazyRow{
+                items(listOfRadio) {
+                    RadioPane(radio = it, model = model)
+                }
+
             }
 
-        }
-        Spacer(Modifier.height(100.dp))
-        Text(text = "Your favourite songs")
-        LazyRow{
-            items(songs) {
-                SongPane(song = it, model = model)
-            }
 
         }
     }
+
 
 }
 

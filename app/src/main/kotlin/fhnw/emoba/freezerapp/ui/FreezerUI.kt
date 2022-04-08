@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.ui.screens.*
+import fhnw.emoba.freezerapp.ui.screens.tabs.AlbumScreen
 import fhnw.emoba.freezerapp.ui.screens.tabs.TabsScreen
 
 
@@ -19,7 +20,7 @@ import fhnw.emoba.freezerapp.ui.screens.tabs.TabsScreen
 fun FreezerUI(model: FreezerModel) {
     MaterialTheme {
         Scaffold(
-            floatingActionButton = { searchFAB(model) },
+            floatingActionButton = { SearchFab(model) },
             floatingActionButtonPosition = FabPosition.End,
             content = { },
         )
@@ -35,6 +36,15 @@ fun FreezerUI(model: FreezerModel) {
 
                     Screen.PLAYERSCREEN -> {
                         PlayerScreen( model = model)
+                    }
+                    Screen.ALBUMSCREEN -> {
+                        AlbumScreen( model = model)
+                    }
+                    Screen.LIBRARYSCREEN -> {
+                        LibrayScreen( model = model)
+                    }
+                    Screen.RADIOSCREEN -> {
+                        RadioScreen( model = model)
                     }
 
 
@@ -53,12 +63,7 @@ fun FreezerUI(model: FreezerModel) {
 
 
 
-@Composable
-fun searchFAB(model: FreezerModel) {
-    FloatingActionButton(onClick = { model.currentScreen = Screen.TABSCREEN })
-    { Icon(Icons.Filled.Search, "Search") }
 
-}
 
 @Composable
 fun MessageBox(text: String) {

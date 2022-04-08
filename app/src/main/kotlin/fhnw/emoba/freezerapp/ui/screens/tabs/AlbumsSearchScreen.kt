@@ -22,7 +22,7 @@ import androidx.constraintlayout.compose.Dimension
 import fhnw.emoba.freezerapp.model.FreezerModel
 
 @Composable
-fun AlbumsScreen(model: FreezerModel) {
+fun AlbumsSearchScreen(model: FreezerModel) {
     Scaffold(
         content = { Body(model) })
 
@@ -31,18 +31,18 @@ fun AlbumsScreen(model: FreezerModel) {
 @Composable
 private fun Body(model: FreezerModel) {
     ConstraintLayout(Modifier.fillMaxSize()) {
-        val (songsList, songsChooser, footer) = createRefs()
+        val (albumsList, albumsChooser, footer) = createRefs()
 
-        SongSearch(model, Modifier.constrainAs(songsChooser) {
+        AlbumSearch(model, Modifier.constrainAs(albumsChooser) {
             start.linkTo(parent.start)
             top.linkTo(parent.top)
             end.linkTo(parent.end)
             width = Dimension.fillToConstraints
         })
-        SongList(model, Modifier.constrainAs(songsList) {
+        AlbumList(model, Modifier.constrainAs(albumsList) {
             start.linkTo(parent.start)
             end.linkTo(parent.end)
-            top.linkTo(songsChooser.bottom, 20.dp)
+            top.linkTo(albumsChooser.bottom, 20.dp)
             bottom.linkTo(footer.bottom, 5.dp)
             width = Dimension.fillToConstraints
             height = Dimension.fillToConstraints
@@ -60,7 +60,7 @@ private fun Body(model: FreezerModel) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun SongSearch(model: FreezerModel, modifier: Modifier) {
+private fun AlbumSearch(model: FreezerModel, modifier: Modifier) {
     with(model) {
         val keyboard = LocalSoftwareKeyboardController.current
         Card(modifier) {
@@ -74,7 +74,7 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
                         IconButton(onClick = {
                             keyboard?.hide()
                             searchText = ""
-                            fetchSongs()
+                            fetchAlbums()
                         })
                         {
                             Icon(Icons.Filled.Clear, "löschen")
@@ -84,11 +84,11 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
                     keyboardActions = KeyboardActions(
                         onSearch = {
                             keyboard?.hide()
-                            fetchSongs()
+                            fetchAlbums()
                         },
                         onDone = {
                             keyboard?.hide()
-                            fetchSongs()
+                            fetchAlbums()
                         }
                     ),
                     placeholder = { Text("Suche") },
@@ -98,7 +98,7 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
                             if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
                                 searchText = searchText.replace("\n", "", ignoreCase = true)
                             }
-                            fetchSongs()
+                            fetchAlbums()
                             true
                         }
                 )
@@ -109,24 +109,24 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
 }
 
 @Composable
-private fun SongList(model: FreezerModel, modifier: Modifier) {
+private fun AlbumList(model: FreezerModel, modifier: Modifier) {
     with(model) {
         when {
-            isLoading -> LoadingBox("Lieder werden geladen")
+            isLoading -> LoadingBox("Alben werden geladen")
             else ->
 
                 Box(modifier) {
-                    if (listOfSongs.isEmpty()) {
+                    if (listOfAlbums.isEmpty()) {
                         Text(
-                            text = "Keine Lieder gefunden",
+                            text = "Keine Alben gefunden",
                             style = MaterialTheme.typography.h6,
                             modifier = Modifier.padding(10.dp)
                         )
                     } else {
                         Divider(modifier = Modifier.align(Alignment.TopStart))
                         LazyColumn(modifier = Modifier.fillMaxSize()) {
-                            items(listOfSongs) {
-                                SongPane(song = it, model = model)
+                            items(listOfAlbums) {
+                                AlbumPane(album = it, model = model)
                             }
                         }
                     }

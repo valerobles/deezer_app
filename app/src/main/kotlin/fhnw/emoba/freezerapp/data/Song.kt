@@ -16,7 +16,6 @@ data class Song(val id: Int,
                 val album_cover: String = "",
                 val album_title: String = "",
                 val artist: String,
-                val artist_picture_small: String,
                 val artist_picture_medium: String,
                 var liked : Boolean = false,
                 var songPreview : String) {
@@ -35,17 +34,30 @@ data class Song(val id: Int,
     }
 
 
+
+
+
     constructor(json: JSONObject, liked: Boolean = false) : this (
         id = json.getInt("id"),
         title = json.getString("title"),
         album_cover = json.getJSONObject("album").getString("cover_medium"),
         album_title = json.getJSONObject("album").getString("title"),
         artist = json.getJSONObject("artist").getString("name"),
-        artist_picture_small = json.getJSONObject("artist").getString("picture_small"),
         artist_picture_medium = json.getJSONObject("artist").getString("picture_medium"),
         songPreview = json.getString("preview"),
         liked = liked
     )
+
+    constructor(json: JSONObject,album_title: String, album_cover: String) : this (
+        id = json.getInt("id"),
+        title = json.getString("title"),
+        album_cover = album_cover,
+        album_title = album_title,
+        artist = json.getJSONObject("artist").getString("name"),
+        artist_picture_medium = "",
+        songPreview = json.getString("preview"),
+    )
+
 
 
     fun asJson(): String {
@@ -59,7 +71,7 @@ data class Song(val id: Int,
                         }
             "artist":   {
                         "name":             $artist
-                        "picture_small":    $artist_picture_small
+        
                         "picture_medium":   $artist_picture_medium
                         }
             "preview":  $songPreview

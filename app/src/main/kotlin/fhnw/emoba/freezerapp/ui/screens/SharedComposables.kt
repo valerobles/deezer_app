@@ -16,13 +16,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.SemanticsProperties.Heading
 
 import androidx.compose.ui.unit.dp
+import fhnw.emoba.R
+import fhnw.emoba.freezerapp.data.DEFAULT_ICON
+import fhnw.emoba.freezerapp.data.Song
+import fhnw.emoba.freezerapp.data.bitmap
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.model.Tab
+import fhnw.emoba.freezerapp.ui.screens.tabs.Heading
+import fhnw.emoba.freezerapp.ui.screens.tabs.Subheading
+
 import kotlinx.coroutines.launch
 
 
@@ -43,19 +52,6 @@ import kotlinx.coroutines.launch
         }
     }
 
-@Composable
-fun ImageWithRoundedCornersAndPadding(imageBitmap: ImageBitmap) {
-
-        Spacer(Modifier.height(12.dp))
-        Box(
-            Modifier.clip(RoundedCornerShape(5.dp)),
-            Alignment.Center
-        ) {
-            Image(bitmap = imageBitmap, contentDescription = "")
-        }
-        Spacer(Modifier.height(12.dp))
-
-}
     @Composable
     fun GoHomeFAB(model: FreezerModel) {
         with(model) {
@@ -102,76 +98,104 @@ fun ImageWithRoundedCornersAndPadding(imageBitmap: ImageBitmap) {
         }
     }
 
-    @Composable
-    fun DefaultBody(tab: Tab) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize().padding(15.dp),
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SongPane(song: Song, model: FreezerModel) {
+    with(song) {
+        Card(modifier  = Modifier
+            .padding(top = 12.dp, start = 12.dp, end = 12.dp)
+            .clickable {
+                model.currentScreen = Screen.PLAYERSCREEN
+                model.currentSong = song
+                model.playerMode = true
+                //song.albumImage = requestImage()
+            },
+            elevation = 4.dp,
         ) {
-            /*
-        }
-            Image(painter            = painterResource(screen.resId),
-                contentDescription = screen.title,
-                contentScale       = ContentScale.FillWidth,
-                modifier           = Modifier.fillMaxWidth().shadow(4.dp, RoundedCornerShape(20.dp))
-            )
-        }
+            Row(modifier            = Modifier.padding(10.dp)) {
+                Column(modifier            = Modifier.padding(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Heading(title)
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Subheading(text     = artist,
+                            modifier = Modifier.align(Alignment.CenterStart))
 
-             */
-        }
-
-
-
-        @Composable
-        fun DrawerRow(model: FreezerModel, tab: Tab) {
-            with(model) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(5.dp)
-                )
-
-
-                {
-                    /*
-                    //TODO: Image and text
-                currentSong?.let { painterResource(id = it.imageId) }?.let {
-                    Image(
-                        painter = it,
-                        contentDescription = currentSong!!.songTitle,
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(5.dp))
-                    )
+                    }
                 }
-
-                     */
-
-                    Text(text = tab.title,
-                        style = MaterialTheme.typography.h5,
-                        modifier = Modifier.padding(5.dp)
-                            .fillMaxWidth()
-                            .clickable(onClick = { currentTab = tab })
-                    )
-                }
-
-
-                Divider()
+                Image(bitmap = albumImage, contentDescription = "")
             }
 
-
         }
+    }
+}
+
+@Composable
+fun ArtistPane(song: Song, model: FreezerModel){
+
+    with(song) {
+        Column() {
+            Card(modifier  = Modifier
+                .padding(top = 40.dp, start = 12.dp, end = 12.dp)
+                .height(100.dp)
+                .width(100.dp)
+                .clickable {
+                    //model.currentScreen = Screen.PLAYERSCREEN
+                    //model.currentSong = song
+                    //song.albumImage = requestImage()
+                },
+                elevation = 4.dp,
+                shape = RoundedCornerShape(30.dp)
+            ) {
+
+                Image(artistImage,
+                    contentDescription = "",
+                    modifier = Modifier.height(200.dp))
 
 
-        @Composable
-        fun Drawer(model: FreezerModel) {
-            Column {
-                DrawerRow(model, Tab.HITSTAB)
-                DrawerRow(model, Tab.SONGSTAB)
-                DrawerRow(model, Tab.ALBUMSTAB)
-                DrawerRow(model, Tab.RADIOTAB)
             }
+            
+            Text(text = artist)
         }
+        }
+        
+    }
+
+
+
+fun requestImage(url: String): ImageBitmap {
+    return try {
+        bitmap(url).asImageBitmap()
+    } catch (e: Exception) {
+        DEFAULT_ICON.asImageBitmap()
+    }
+}
+
+@Composable
+fun CurrentlyPlaying(model: FreezerModel){
+
+}
+
+@Composable
+fun DefaultBody(tab: Tab) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp),
+    ) {
+        /*
+    }
+        Image(painter            = painterResource(screen.resId),
+            contentDescription = screen.title,
+            contentScale       = ContentScale.FillWidth,
+            modifier           = Modifier.fillMaxWidth().shadow(4.dp, RoundedCornerShape(20.dp))
+        )
+    }
+
+         */
+    }
 
 
 

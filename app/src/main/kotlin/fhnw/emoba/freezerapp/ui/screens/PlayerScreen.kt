@@ -27,7 +27,7 @@ fun PlayerScreen(model: FreezerModel){
             topBar = { model.currentSong?.let { TopBar(model = model,song = it) } },
             floatingActionButton = { GoHomeFAB(model) },
             floatingActionButtonPosition = FabPosition.End,
-            content = { model.currentSong?.let { it1 -> Body(it1) } },
+            content = { model.currentSong?.let { it1 -> Body(it1,model) } },
         )
         DefaultBody(tab = fhnw.emoba.freezerapp.model.Tab.ALBUMSTAB)
     }
@@ -39,9 +39,10 @@ fun PlayerScreen(model: FreezerModel){
 private fun TopBar(model: FreezerModel,song: Song) {
     with(model) {
         TopAppBar(
-            title = { Text(song.songTitle) },
+            title = { Text(song.title) },
             navigationIcon = {
-                IconButton(onClick = { currentScreen = Screen.TABSCREEN }) {
+                IconButton(onClick = { currentScreen = Screen.TABSCREEN
+               }) {
                     Icon(Icons.Filled.ArrowBack, "Back")
                 }
             }
@@ -50,7 +51,7 @@ private fun TopBar(model: FreezerModel,song: Song) {
 }
 
 @Composable
-private fun Body(song: Song){
+private fun Body(song: Song, model: FreezerModel){
     with(song){
         Column(
             Modifier
@@ -59,17 +60,17 @@ private fun Body(song: Song){
             Arrangement.Center,
             Alignment.CenterHorizontally,
         ) {
-            Text(text = songTitle)
+            Text(text = title)
             Spacer(Modifier.height(12.dp))
             Box(
 
                 Modifier
-                    .padding(20.dp)
+                    .padding(10.dp)
                     .clip(RoundedCornerShape(15.dp)),
                 Alignment.Center
 
             ) {
-                Image(painterResource(id = imageId),songTitle)
+                Image(albumImage,"")
             }
             Spacer(Modifier.height(12.dp))
 
@@ -86,18 +87,21 @@ private fun Body(song: Song){
                         modifier = Modifier.size(40.dp),
                     )
                 }
-                IconButton(onClick = { }) { //  startPausePlayer(currentlySelectedSong)
-                    //if (playerIsReady)
-                    Icon(Icons.Filled.PlayArrow, "",
-                        modifier = Modifier.size(60.dp),
-                    )
-                    /*
-                     else
-                         Icon(Icons.Filled.Pause, "",
-                             modifier = Modifier.size(40.dp),
-                             tint = whiteColor)
+                IconButton(onClick = {model.startStopPlayer(song) }) {
 
-                     */
+                    if (model.playerMode) {
+                        if (!model.isPlaying)
+                            Icon(
+                                Icons.Filled.PlayArrow, "",
+                                modifier = Modifier.size(60.dp),
+                            )
+                        else
+                            Icon(
+                                Icons.Filled.Pause, "",
+                                modifier = Modifier.size(60.dp),
+                            )
+
+                    }
                 }
                 IconButton(onClick = { }) { //  playNextSong()
                     Icon(Icons.Filled.SkipNext, "",

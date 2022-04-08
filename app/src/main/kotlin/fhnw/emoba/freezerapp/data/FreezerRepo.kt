@@ -1,17 +1,25 @@
 package fhnw.emoba.freezerapp.data
 
 import fhnw.emoba.R
+import java.util.*
 
 object FreezerRepo {
-    val songs = listOf(
-        Song(songTitle = "Lorem",         artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "ipsum",         artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "Lorem",         artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "ipsum",         artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "Freezer",       artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "Portugal",      artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "Hello",         artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "Schweden",      artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey),
-        Song(songTitle = "San Marino",    artist = "Bruno Mars", imageId     = R.drawable.birds_of_prey)
-    )
+    /*
+    private val CH = Locale("de", "CH")
+    private val CITIES_FILE_NAME = "citylist.json"
+
+    val data = dataListFrom(CITIES_FILE_NAME, context) { City(it) }
+
+    fun getCity(id: Int): City = data.filter { it.id == id }.first()
+
+    fun search(nameFilter: String, countryCodeFilter: String): List<City> =
+        when {
+            nameFilter.isBlank() -> emptyList()
+            else -> data.filter {
+                it.name.lowercase(CH).contains(nameFilter.lowercase(CH)) &&
+                        countryCodeFilter.contains(it.countryCode)
+            }
+        }
+
+     */
 }

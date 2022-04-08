@@ -19,7 +19,7 @@ import fhnw.emoba.freezerapp.ui.screens.tabs.TabsScreen
 fun FreezerUI(model: FreezerModel) {
     MaterialTheme {
         Scaffold(
-            floatingActionButton = { FAB(model) },
+            floatingActionButton = { searchFAB(model) },
             floatingActionButtonPosition = FabPosition.End,
             content = { },
         )
@@ -27,7 +27,7 @@ fun FreezerUI(model: FreezerModel) {
             Crossfade(targetState = model.currentScreen) { screen ->
                 when (screen) {
                     Screen.HOMESCREEN -> {
-                        HomeScreen(text = "Home")
+                        HomeScreen(model = model)
                     }
                     Screen.TABSCREEN -> {
                         TabsScreen(model = model)
@@ -54,7 +54,7 @@ fun FreezerUI(model: FreezerModel) {
 
 
 @Composable
-private fun FAB(model: FreezerModel) {
+fun searchFAB(model: FreezerModel) {
     FloatingActionButton(onClick = { model.currentScreen = Screen.TABSCREEN })
     { Icon(Icons.Filled.Search, "Search") }
 

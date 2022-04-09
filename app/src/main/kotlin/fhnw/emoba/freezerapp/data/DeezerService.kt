@@ -23,4 +23,7 @@ interface DeezerService {
     fun requestRatio(): List<Radio>
 
     fun requestRadioSongs(radio: Radio, tracklist: String): List<Song>
+
+    fun requestArtistSongs(artist: Artist, tracklist: String): List<Song>
+    fun requestArtist(artist: Int, listOfArtists: MutableList<Artist>): List<Artist>
 }

@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +31,6 @@ fun PlayerScreen(model: FreezerModel){
             floatingActionButtonPosition = FabPosition.End,
             content = { model.currentSong?.let { it1 -> Body(it1,model) } },
         )
-        DefaultBody(tab = fhnw.emoba.freezerapp.model.Tab.ALBUMSTAB)
     }
 
 
@@ -83,7 +84,7 @@ private fun Body(song: Song, model: FreezerModel){
                 Modifier.fillMaxWidth(),
                 Arrangement.SpaceEvenly,
             ) {
-                IconButton(onClick = { }) { // playPreviousSong()
+                IconButton(onClick = {model.playPreviousSong() }) { // playPreviousSong()
                     Icon(Icons.Filled.SkipPrevious, "",
                         modifier = Modifier.size(40.dp),
                     )
@@ -104,7 +105,7 @@ private fun Body(song: Song, model: FreezerModel){
 
                     }
                 }
-                IconButton(onClick = { }) { //  playNextSong()
+                IconButton(onClick = { model.playNextSong()}) { //  playNextSong()
                     Icon(Icons.Filled.SkipNext, "",
                         modifier = Modifier.size(40.dp),
                     )
@@ -114,9 +115,12 @@ private fun Body(song: Song, model: FreezerModel){
                 Modifier.fillMaxWidth(),
                 Arrangement.SpaceEvenly,
             ) {
-                IconButton(onClick = { }) { // add to favourites list }
-                    Icon(Icons.Filled.ThumbUp, "",
-                    )
+                IconButton(
+                    onClick = { model.addRemoveFavorite(song) }) {
+                    if (song.liked)
+                        Icon(Icons.Filled.Favorite, "")
+                    else
+                        Icon(Icons.Outlined.FavoriteBorder, "")
                 }
             }
 

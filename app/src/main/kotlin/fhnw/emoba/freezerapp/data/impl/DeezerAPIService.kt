@@ -82,6 +82,28 @@ class DeezerAPIService : DeezerService{
         return listOfSongs.toList()
     }
 
+    override fun requestArtist(artist: Int,listOfArtists: MutableList<Artist>): List<Artist>{
+        val baseURL = "https://api.deezer.com/artist/"
+        val json = JSONObject(content(baseURL+artist.toString()))
+
+        listOfArtists.add(Artist(json))
+        listOfArtists.last().loadImage()
+
+        return listOfArtists.toList()
+    }
+
+    override fun requestArtistSongs( artist: Artist,tracklist: String): List<Song> {
+        val listOfSongs: MutableList<Song> = mutableListOf()
+        val json = JSONObject(content(tracklist))
+        val data = json.getJSONArray("data")
+
+        for (i in 0 until data.length()) {
+            listOfSongs.add(Song(data.getJSONObject(i), artist.name, artist.picture_medium))
+            listOfSongs.last().loadImage()
+        }
+        return listOfSongs.toList()
+    }
+
 }
 
 

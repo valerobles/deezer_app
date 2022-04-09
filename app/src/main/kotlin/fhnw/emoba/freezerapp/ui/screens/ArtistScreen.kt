@@ -13,11 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import fhnw.emoba.freezerapp.model.FreezerModel
-import fhnw.emoba.freezerapp.ui.MessageBox
-
 
 @Composable
-fun LibrayScreen(model: FreezerModel) {
+fun ArtistScreen(model: FreezerModel){
     Scaffold(
         content = { Body(model) },
         bottomBar = {if (model.playerMode)
@@ -40,23 +38,28 @@ private fun Body(model: FreezerModel) {
             Arrangement.Center,
             Alignment.CenterHorizontally,) {
 
-            Heading(text = "Your favorite songs") 
+            model.currentArtist?.let { Text(text = it.name) }
             Spacer(Modifier.height(12.dp))
-            
+            Box(
+
+                Modifier
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(15.dp)),
+                Alignment.Center
+
+            ) {
+                model.currentArtist?.let { Image(it.artistImage, "", Modifier.size(128.dp)) }
+            }
+            Spacer(Modifier.height(12.dp))
+
 
 
         }
-        
-        if(model.favoriteSongs.size != 0) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(model.favoriteSongs) {
-                    SongPane(song = it, model = model)
-                }
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            items(model.listOfArtistsSongs) {
+                SongPane(song = it, model = model, artistX = true)
             }
         }
-        else
-            Text(text = "your library is empty, go like some songs")
-            
 
     }
 

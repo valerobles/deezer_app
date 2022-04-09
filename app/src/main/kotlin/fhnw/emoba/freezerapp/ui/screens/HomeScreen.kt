@@ -52,18 +52,20 @@ private fun HomeBody(model: FreezerModel){
             Spacer(Modifier.height(50.dp))
             Text(text = "Artists recommended to you")
             LazyRow{
-                items(listOfSongs) {
-                    ArtistPane(song = it, model = model)
+                items(listOfArtists) {
+                    ArtistPane(artist = it, model = model)
                 }
 
             }
-            Spacer(Modifier.height(50.dp))
-            Text(text = "Your favourite songs")
-            LazyRow{
-                items(listOfSongs) {
-                    SongPane(song = it, model = model)
-                }
+            if(favoriteSongs.size != 0) {
+                Spacer(Modifier.height(50.dp))
+                Text(text = "Your favourite songs")
+                LazyRow {
+                    items(favoriteSongs) {
+                        SongPane(song = it, model = model)
+                    }
 
+                }
             }
             Spacer(Modifier.height(50.dp))
             Text(text = "Radio Stations")

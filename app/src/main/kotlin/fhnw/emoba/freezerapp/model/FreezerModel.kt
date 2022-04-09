@@ -2,14 +2,8 @@ package fhnw.emoba.freezerapp.model
 
 import android.media.AudioAttributes
 import android.media.MediaPlayer
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
-import fhnw.emoba.freezerapp.data.Album
-import fhnw.emoba.freezerapp.data.DeezerService
-import fhnw.emoba.freezerapp.data.Radio
-import fhnw.emoba.freezerapp.data.Song
+import androidx.compose.runtime.*
+import fhnw.emoba.freezerapp.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -43,6 +37,16 @@ class FreezerModel(val deezerService: DeezerService) {
     var currentRadio: Radio? by mutableStateOf(null)
 
     var playerBarOn by mutableStateOf(false)
+
+    var currentPlaylist: List<Song> by mutableStateOf(emptyList())
+
+    var listOfArtists: MutableList<Artist> = mutableStateListOf()
+    var listOfArtistsSongs: List<Song> by mutableStateOf(emptyList())
+    var currentArtist: Artist? by mutableStateOf(null)
+
+
+    var favoriteSongs: MutableList<Song> = mutableStateListOf()
+
 
 
 
@@ -113,52 +117,35 @@ class FreezerModel(val deezerService: DeezerService) {
 
     }
 
-    fun startUp(){
-        var list = mutableListOf(Song(138545995,
-            "Hello",
-            "https://api.deezer.com/album/14880539/image",
-            "25",
-            "Adele",
-            "https://e-cdns-images.dzcdn.net/images/artist/e5fc443d2abc03b487234ba4de65a001/250x250-000000-80-0-0.jpg",
-            false,
-            "https://cdns-preview-c.dzcdn.net/stream/c-cf968741c42b47400aca81b6da437a03-3.mp3"))
-        list.addAll(0, arrayListOf(Song(138545995,
-            "Hello",
-            "https://api.deezer.com/album/14880539/image",
-            "25",
-            "Adele",
-            "https://e-cdns-images.dzcdn.net/images/artist/e5fc443d2abc03b487234ba4de65a001/250x250-000000-80-0-0.jpg",
-            false,
-            "https://cdns-preview-c.dzcdn.net/stream/c-cf968741c42b47400aca81b6da437a03-3.mp3"),
-            Song(138545995,
-                "Hello",
-                "https://api.deezer.com/album/14880539/image",
-                "25",
-                "Adele",
-                "https://e-cdns-images.dzcdn.net/images/artist/e5fc443d2abc03b487234ba4de65a001/250x250-000000-80-0-0.jpg",
-                false,
-                "https://cdns-preview-c.dzcdn.net/stream/c-cf968741c42b47400aca81b6da437a03-3.mp3"),
-            Song(138545995,
-                "Hello",
-                "https://api.deezer.com/album/14880539/image",
-                "25",
-                "Adele",
-                "https://e-cdns-images.dzcdn.net/images/artist/e5fc443d2abc03b487234ba4de65a001/250x250-000000-80-0-0.jpg",
-                false,
-                "https://cdns-preview-c.dzcdn.net/stream/c-cf968741c42b47400aca81b6da437a03-3.mp3"),
-            Song(138545995,
-                "Hello",
-                "https://api.deezer.com/album/14880539/image",
-                "25",
-                "Adele",
-                "https://e-cdns-images.dzcdn.net/images/artist/e5fc443d2abc03b487234ba4de65a001/250x250-000000-80-0-0.jpg",
-                false,
-                "https://cdns-preview-c.dzcdn.net/stream/c-cf968741c42b47400aca81b6da437a03-3.mp3")))
 
-        list.forEach{it.loadImage() }
-        listOfSongs = list
-        fetchRadioStation()
+    fun fetchArtistSongs(){
+        isLoading = true
+        listOfArtistsSongs = emptyList()
+        modelScope.launch {
+            listOfArtistsSongs = currentArtist?.let { deezerService.requestArtistSongs(it,
+                currentArtist!!.tracklist) }!!
+            isLoading = false
+        }
     }
+
+    fun fetchArtist(artistID: Int){
+        isLoading = true
+        modelScope.launch {
+            listOfArtists =
+                deezerService.requestArtist(artistID,listOfArtists) as MutableList<Artist> // TODO only add one
+            isLoading = false
+        }
+    }
+
+    fun startUp(){
+        val list = mutableListOf(27,246791,160,564)
+        list.forEach { fetchArtist(it) }
+
+        fetchRadioStation()
+
+    }
+
+
 
     fun startStopPlayer(song: Song){
 
@@ -183,15 +170,45 @@ class FreezerModel(val deezerService: DeezerService) {
         isPlaying = false
     }
 
-    fun getNextandLastSong() {
-        if (listOfSongs.indexOf(currentSong) < listOfSongs.size) {
-            nextSong = listOfSongs[listOfSongs.indexOf(currentSong) + 1]
-        }
-        if (listOfSongs.indexOf(currentSong) > listOfSongs.size) {
-            lastSong = listOfSongs[listOfSongs.indexOf(currentSong) - 1]
-        }
 
+
+    fun playNextSong() {
+        val nextSongIndex = currentPlaylist.indexOf(currentSong) + 1
+        if (nextSongIndex >= currentPlaylist.size) {
+            currentSong = currentPlaylist.first()
+            startPlayer(currentSong!!)
+        }
+        else {
+            currentSong = currentPlaylist[nextSongIndex]
+            startPlayer(currentSong!!)
+        }
     }
+
+    fun playPreviousSong() {
+        val previousSongIndex = currentPlaylist.indexOf(currentSong) - 1
+        if (previousSongIndex < 0) {
+            currentSong = currentPlaylist.last()
+            startPlayer(currentSong!!)
+        }
+        else {
+            currentSong = currentPlaylist[previousSongIndex]
+            startPlayer(currentSong!!)
+        }
+    }
+
+    fun addRemoveFavorite(song : Song) {
+        if (song.liked) {
+            favoriteSongs.remove(song)
+            song.liked = false
+        }
+        else {
+            favoriteSongs.add(song)
+            song.liked = true
+        }
+    }
+
+
+
 
     }
 

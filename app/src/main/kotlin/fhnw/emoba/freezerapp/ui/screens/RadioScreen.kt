@@ -55,7 +55,7 @@ private fun Body(model: FreezerModel) {
         }
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(model.listOfRadioSongs) {
-                SongPane(song = it, model = model)
+                SongPane(song = it, model = model, radio = true)
             }
         }
 

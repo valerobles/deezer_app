@@ -1,16 +1,18 @@
 package fhnw.emoba.freezerapp.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 
@@ -19,12 +21,6 @@ import fhnw.emoba.freezerapp.data.*
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.model.Tab
-import fhnw.emoba.freezerapp.ui.screens.tabs.Heading
-import fhnw.emoba.freezerapp.ui.screens.tabs.Subheading
-
-
-import kotlinx.coroutines.launch
-
 
 
 @Composable
@@ -87,21 +83,37 @@ fun BackToScreenIcon(model: FreezerModel, tab: Tab) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SongPane(song: Song, model: FreezerModel) {
+fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolean=false,artistX: Boolean=false,fave: Boolean =false) {
     with(song) {
-        Card(modifier  = Modifier
-            .padding(top = 12.dp, start = 12.dp, end = 12.dp)
-            .clickable {
+        Card(
+            modifier  = Modifier
 
-                model.currentScreen = Screen.PLAYERSCREEN
-                model.currentSong = song
-                model.playerMode = true
-                model.getNextandLastSong()
-                //song.albumImage = requestImage()
-            },
+                .padding(top = 10.dp, start = 10.dp, end = 10.dp)
+                .clickable {
+
+                    model.currentScreen = Screen.PLAYERSCREEN
+                    model.currentSong = song
+                    model.playerMode = true
+                    if (radio)
+                        model.currentPlaylist = model.listOfRadioSongs
+                    else if (album)
+                        model.currentPlaylist = model.listOfAlbumSongs
+                    else if (artistX)
+                        model.currentPlaylist = model.listOfArtistsSongs
+                    else if(fave)
+                        model.currentPlaylist = model.favoriteSongs
+                    else
+                        model.currentPlaylist = model.listOfSongs
+                },
+
+
             elevation = 4.dp,
+
         ) {
-            Row(modifier            = Modifier.padding(10.dp)) {
+            Row(modifier            = Modifier.padding(10.dp),
+                Arrangement.SpaceBetween
+                ) {
+                Image(bitmap = albumImage, contentDescription = "", Modifier.size(100.dp))
                 Column(modifier            = Modifier.padding(10.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Heading(title)
@@ -110,8 +122,23 @@ fun SongPane(song: Song, model: FreezerModel) {
                             modifier = Modifier.align(Alignment.CenterStart))
 
                     }
+
+
                 }
-                Image(bitmap = albumImage, contentDescription = "")
+                Column(modifier            = Modifier.padding(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    IconButton(
+                        onClick = { model.addRemoveFavorite(song) }) {
+                        if (song.liked)
+                            Icon(Icons.Filled.Favorite, "")
+                        else
+                            Icon(Icons.Outlined.FavoriteBorder, "")
+                }
+
+                }
+
+
+
             }
 
         }
@@ -168,41 +195,6 @@ fun LibSearchFab(model: FreezerModel){
 }
 
 @Composable
-fun ArtistPane(song: Song, model: FreezerModel){
-
-    with(song) {
-        Column(
-            Modifier,
-            Arrangement.Center,
-            Alignment.CenterHorizontally,
-        ) {
-            Card(modifier  = Modifier
-                .padding(top = 10.dp, start = 12.dp, end = 12.dp)
-                .height(100.dp)
-                .width(100.dp)
-                .clickable {
-                    //model.currentScreen = Screen.PLAYERSCREEN
-                    //model.currentSong = song
-                    //song.albumImage = requestImage()
-                },
-                elevation = 4.dp,
-                shape = RoundedCornerShape(30.dp)
-
-            ) {
-
-                Image(artistImage,
-                    contentDescription = "",
-                    modifier = Modifier.height(200.dp))
-
-
-            }
-            
-            Text(text = artist)
-        }
-        }
-        
-    }
-@Composable
 fun RadioPane(radio: Radio, model: FreezerModel){
 
     with(radio) {
@@ -233,6 +225,41 @@ fun RadioPane(radio: Radio, model: FreezerModel){
             }
 
             Text(text = title)
+        }
+        }
+
+    }
+@Composable
+fun ArtistPane(artist: Artist, model: FreezerModel){
+
+    with(artist) {
+        Column(
+            Modifier,
+            Arrangement.Center,
+            Alignment.CenterHorizontally,
+        ) {
+            Card(modifier  = Modifier
+                .padding(top = 10.dp, start = 12.dp, end = 12.dp)
+                .height(100.dp)
+                .width(100.dp)
+                .clickable {
+                    model.currentScreen = Screen.ARTISTSCREEN
+                    model.currentArtist = artist
+                    model.fetchArtistSongs()
+                },
+                elevation = 4.dp,
+                shape = RoundedCornerShape(30.dp)
+
+            ) {
+
+                Image(artistImage,
+                    contentDescription = "",
+                    modifier = Modifier.height(200.dp))
+
+
+            }
+
+            Text(text = name)
         }
         }
 
@@ -272,33 +299,35 @@ fun CurrentSongPane(model: FreezerModel){
     with(model){
 
         Row(
-            Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth()
+                .padding(top=10.dp)
+                .clickable { currentScreen =Screen.PLAYERSCREEN }
+                .background(Color(100,50,200)),
             Arrangement.SpaceEvenly
         ) {
-            Column() {
-                currentSong?.let { Text(it.title) }
-                currentSong?.let { Text(it.artist) }
+            Column(
+            ) {
+                currentSong?.let { Text(it.title,maxLines = 1) }
+                currentSong?.let { Text(it.artist,maxLines = 1) }
 
             }
 
-            IconButton(onClick = { }) {
+            IconButton(onClick = { playPreviousSong()}) {
                 Icon(Icons.Filled.SkipPrevious, "")
             }
             IconButton(onClick = { currentSong?.let { startStopPlayer(it) } }) {
                 if (!model.isPlaying)
                     Icon(
                         Icons.Filled.PlayArrow, "",
-                        modifier = Modifier.size(60.dp,),
                     )
                 else
                     Icon(
                         Icons.Filled.Pause, "",
-                        modifier = Modifier.size(60.dp),
                     )
             }
 
 
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { playNextSong() }) {
                 Icon(Icons.Filled.SkipNext, "")
             }
         }
@@ -306,6 +335,22 @@ fun CurrentSongPane(model: FreezerModel){
 
     }
 
+}
+
+@Composable
+fun Heading(text: String) {
+    Text(text = text,
+        style = MaterialTheme.typography.h5,
+        maxLines = 2)
+}
+
+@Composable
+fun Subheading(text: String, modifier: Modifier) {
+    Text(text     = text,
+        style    = MaterialTheme.typography.h6,
+        modifier = modifier,
+        maxLines = 2
+    )
 }
 
 @Composable

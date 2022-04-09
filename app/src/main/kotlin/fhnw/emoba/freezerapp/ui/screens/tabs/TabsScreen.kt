@@ -2,13 +2,10 @@ package fhnw.emoba.freezerapp.ui.screens.tabs
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.model.Tab
@@ -48,14 +45,15 @@ private fun Body(model: FreezerModel){
             Crossfade(targetState = model.currentTab) { tab ->
                 when (tab) {
                     Tab.ALBUMSTAB -> {
+                        searchText = ""
                         AlbumsSearchScreen(model = model)
-                    }
 
-                    Tab.RADIOTAB -> {
-                        RadioScreen(model = model)
+
                     }
                     Tab.SONGSTAB -> {
+                        searchText = ""
                         SongScreen(model = model)
+
                     }
                 }
 
@@ -69,41 +67,12 @@ private fun Body(model: FreezerModel){
 }
 
 
-@Composable
-fun BodyList(model: FreezerModel) {
-    with(model){
-        LazyColumn {
-            items(listOfSongs) {
-                SongPane(song = it, model = model)
-            }
-        }
-    }
-}
-// https://developer.android.com/reference/kotlin/androidx/compose/foundation/lazy/package-summary#lazycolumn
-
-
-// : Implementieren Sie eine Funktion, die ein einzelnes Country visualisiert
-//  verwenden Sie 'Card'
-//  https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary#card
 
 
 
 
 
 
-@Composable
- fun Heading(text: String) {
-    Text(text = text,
-        style = MaterialTheme.typography.h4)
-}
-
-@Composable
- fun Subheading(text: String, modifier: Modifier) {
-    Text(text     = text,
-        style    = MaterialTheme.typography.h5,
-        modifier = modifier
-    )
-}
 
 
 @Composable

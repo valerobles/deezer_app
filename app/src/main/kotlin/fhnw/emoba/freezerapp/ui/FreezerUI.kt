@@ -47,6 +47,10 @@ fun FreezerUI(model: FreezerModel) {
                         RadioScreen( model = model)
                     }
 
+                    Screen.ARTISTSCREEN -> {
+                        ArtistScreen( model = model)
+                    }
+
 
                 }
 

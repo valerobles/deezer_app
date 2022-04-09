@@ -5,22 +5,44 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import fhnw.emoba.freezerapp.data.Album
+import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
+import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.ui.screens.AlbumPane
 import fhnw.emoba.freezerapp.ui.screens.SongPane
 
 @Composable
 fun AlbumScreen(model: FreezerModel){
     Scaffold(
-        content = { Body(model) })
+        content = { Body(model)},
+        topBar = { model.currentAlbum?.let { TopBar(model = model,album = it) } }
+    )
 
+}
+
+@Composable
+private fun TopBar(model: FreezerModel,album: Album) {
+    with(model) {
+        TopAppBar(
+            title = { Text(album.title) },
+            navigationIcon = {
+                IconButton(onClick = { currentScreen = Screen.TABSCREEN
+                    currentTab = fhnw.emoba.freezerapp.model.Tab.ALBUMSTAB
+                }) {
+                    Icon(Icons.Filled.ArrowBack, "Back")
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -57,7 +79,7 @@ Column(
     }
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(model.listOfAlbumSongs) {
-            SongPane(song = it, model = model)
+            SongPane(song = it, model = model,album = true)
         }
     }
 

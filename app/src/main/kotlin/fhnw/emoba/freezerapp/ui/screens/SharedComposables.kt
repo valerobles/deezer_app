@@ -200,22 +200,22 @@ fun CurrentSongPane(model: FreezerModel){
                 }
 
                 IconButton(onClick = { playPreviousSong()}) {
-                    Icon(Icons.Filled.SkipPrevious, "")
+                    Icon(Icons.Filled.SkipPrevious, "",modifier =Modifier.padding(top=10.dp))
                 }
                 IconButton(onClick = { currentPlaying?.let { startStopPlayer(it) } }) {
                     if (!model.isPlaying)
                         Icon(
-                            Icons.Filled.PlayArrow, "",
+                            Icons.Filled.PlayArrow, "",modifier =Modifier.padding(top=10.dp)
                         )
                     else
                         Icon(
-                            Icons.Filled.Pause, "",
+                            Icons.Filled.Pause, "",modifier =Modifier.padding(top=10.dp)
                         )
                 }
 
 
                 IconButton(onClick = { playNextSong() }) {
-                    Icon(Icons.Filled.SkipNext, "")
+                    Icon(Icons.Filled.SkipNext, "",modifier =Modifier.padding(top=10.dp))
                 }
             }
 

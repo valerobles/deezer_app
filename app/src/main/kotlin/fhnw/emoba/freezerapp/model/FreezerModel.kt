@@ -226,13 +226,9 @@ class FreezerModel(val deezerService: DeezerService) {
 
 
 
-//TODO: Deezer Logo
 
-//TODO: Tests
 
-//TODO: go back
 
-// TODO:
 
     }
 

@@ -1,17 +1,22 @@
 package fhnw.emoba.freezerapp.model
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+
 import fhnw.emoba.freezerapp.data.DeezerService
 import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.data.impl.DeezerAPIService
 import junit.framework.Assert.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import org.junit.Before
 import org.junit.Test
 
 internal class ModelTest {
+
+    private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     private val SongAsString = """
         {
         "id": "1109737",
@@ -48,8 +53,11 @@ internal class ModelTest {
         assertTrue(model.listOfRadio.isEmpty())
         assertTrue(model.listOfArtists.isEmpty())
         model.startUp()
-        //assertTrue(model.listOfRadio.isNotEmpty())
-        //assertTrue(model.listOfArtists.isNotEmpty())
+        modelScope.launch {
+            assertTrue(model.listOfRadio.isNotEmpty())
+            assertTrue(model.listOfArtists.isNotEmpty())
+        }
+
     }
 
     @Test

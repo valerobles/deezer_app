@@ -1,6 +1,7 @@
 package fhnw.emoba.freezerapp.ui.screens
 
 import android.view.KeyEvent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,17 +15,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import fhnw.emoba.R
 import fhnw.emoba.freezerapp.model.FreezerModel
 
 @Composable
 fun SongScreen(model: FreezerModel) {
-    Scaffold(
-        content = { Body(model) })
+    Box {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(R.drawable.colors),
+            contentDescription = "background_image",
+            contentScale = ContentScale.FillBounds
+        )
+
+        Scaffold(
+        backgroundColor = Color.Transparent,
+        content = { Body(model) })}
 
 }
 
@@ -63,7 +77,7 @@ private fun Body(model: FreezerModel) {
 private fun SongSearch(model: FreezerModel, modifier: Modifier) {
     with(model) {
         val keyboard = LocalSoftwareKeyboardController.current
-        Card(modifier) {
+        Card(modifier,backgroundColor = Color.Transparent,elevation = 0.dp) {
             Column(
                 modifier = Modifier.padding(10.dp)
             ) {
@@ -142,7 +156,7 @@ private fun Footer(model: FreezerModel, modifier: Modifier) {
             text = "Best App Ever",
             style = MaterialTheme.typography.caption,
             modifier = modifier
-                .background(MaterialTheme.colors.primary)
+                .background(Color.White)
                 .padding(horizontal = 15.dp, vertical = 5.dp)
         )
     }

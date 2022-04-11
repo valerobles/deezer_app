@@ -11,16 +11,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fhnw.emoba.R
 import fhnw.emoba.freezerapp.model.FreezerModel
 
 @Composable
 fun ArtistScreen(model: FreezerModel){
-    Scaffold(
-        content = { Body(model) },
-        bottomBar = {if (model.playerMode)
-            CurrentSongPane(model = model)   },
-        floatingActionButton = { GoHomeFAB(model = model) })
+    Box {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(R.drawable.colors),
+            contentDescription = "background_image",
+            contentScale = ContentScale.FillBounds
+        )
+
+        Scaffold(
+            backgroundColor = Color.Transparent,
+            content = { Body(model) },
+            bottomBar = {
+                if (model.playerMode)
+                    CurrentSongPane(model = model)
+            },
+            floatingActionButton = { GoHomeFAB(model = model) })
+    }
 
 }
 

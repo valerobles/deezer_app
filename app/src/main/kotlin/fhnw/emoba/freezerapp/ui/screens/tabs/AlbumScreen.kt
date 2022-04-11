@@ -12,7 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fhnw.emoba.R
 import fhnw.emoba.freezerapp.data.Album
 import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
@@ -22,10 +26,20 @@ import fhnw.emoba.freezerapp.ui.screens.SongPane
 
 @Composable
 fun AlbumScreen(model: FreezerModel){
-    Scaffold(
+    Box {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(R.drawable.colors),
+            contentDescription = "background_image",
+            contentScale = ContentScale.FillBounds
+        )
+
+        Scaffold(
+         backgroundColor = Color.Transparent,
         content = { Body(model)},
         topBar = { model.currentAlbum?.let { TopBar(model = model,album = it) } }
     )
+    }
 
 }
 

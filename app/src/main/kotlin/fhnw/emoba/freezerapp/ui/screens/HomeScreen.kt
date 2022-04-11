@@ -1,5 +1,7 @@
 package fhnw.emoba.freezerapp.ui.screens
 
+
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -7,7 +9,11 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fhnw.emoba.R
 import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
 
@@ -15,8 +21,16 @@ import fhnw.emoba.freezerapp.model.FreezerModel
 
 @Composable
 fun HomeScreen(model: FreezerModel) {
-    MaterialTheme {
+    Box {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(R.drawable.colors),
+            contentDescription = "background_image",
+            contentScale = ContentScale.FillBounds
+        )
         Scaffold(
+            backgroundColor = Color.Transparent,
+
             topBar = {Bar(model.title) },
             bottomBar = {if (model.playerMode)
                              CurrentSongPane(model = model)   },
@@ -26,6 +40,7 @@ fun HomeScreen(model: FreezerModel) {
             content = {Body(model.listOfSongs,model) },
         )
     }
+
 }
 
 @Composable
@@ -62,7 +77,7 @@ private fun HomeBody(model: FreezerModel){
                 Text(text = "Your favourite songs")
                 LazyRow {
                     items(favoriteSongs) {
-                        SongPane(song = it, model = model)
+                        FavouritesPane(song = it, model = model)
                     }
 
                 }

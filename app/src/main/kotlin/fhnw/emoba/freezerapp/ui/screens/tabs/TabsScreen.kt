@@ -18,7 +18,7 @@ fun TabsScreen(model: FreezerModel) {
     MaterialTheme {
         Scaffold(
             topBar = { Bar(model.title) },
-            floatingActionButton = { FAB(model) },
+            floatingActionButton = { GoHomeFAB(model) },
             floatingActionButtonPosition = FabPosition.End,
             content = { Body(model) },
         )
@@ -80,10 +80,4 @@ fun Bar(title: String) {
     TopAppBar(title = { Text(title) })
 }
 
-@Composable
-private fun FAB(model: FreezerModel) {
-    FloatingActionButton(onClick = { model.currentScreen = Screen.HOMESCREEN })
-    { Icon(Icons.Filled.Home, "Home") }
-
-}
 

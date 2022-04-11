@@ -18,7 +18,9 @@ class FreezerModel(val deezerService: DeezerService) {
 
     var currentTab by mutableStateOf(Tab.SONGSTAB)
     var currentScreen by mutableStateOf(Screen.HOMESCREEN)
-    var currentSong: Song? by mutableStateOf(null)
+    var currentPlaying: Song? by mutableStateOf(null) // Or current selected song?
+
+    var selectedSong: Song? by mutableStateOf(null)
 
     var nextSong: Song? by mutableStateOf(null)
     var lastSong: Song? by mutableStateOf(null)
@@ -138,14 +140,15 @@ class FreezerModel(val deezerService: DeezerService) {
     }
 
     fun startUp(){
-        val list = mutableListOf(27,246791,160,564)
+        val list = mutableListOf(27)
+        for (i in 0 until 4){
+            list.add((1..800).shuffled().first())
+        }
         list.forEach { fetchArtist(it) }
 
         fetchRadioStation()
 
     }
-
-
 
     fun startStopPlayer(song: Song){
 
@@ -157,13 +160,14 @@ class FreezerModel(val deezerService: DeezerService) {
     }
 
     private fun startPlayer(song : Song) {
+
         player.reset()
         player.setDataSource(song.songPreview)
         player.prepareAsync()
         player.start()
         isPlaying = true
 
-            }
+    }
 
     private fun pausePlayer(){
         player.pause()
@@ -173,29 +177,28 @@ class FreezerModel(val deezerService: DeezerService) {
 
 
     fun playNextSong() {
-        val nextSongIndex = currentPlaylist.indexOf(currentSong) + 1
+        val nextSongIndex = currentPlaylist.indexOf(currentPlaying) + 1
         if (nextSongIndex >= currentPlaylist.size) {
-            currentSong = currentPlaylist.first()
-            startPlayer(currentSong!!)
+            currentPlaying = currentPlaylist.first()
+            startPlayer(currentPlaying!!)
         }
         else {
-            currentSong = currentPlaylist[nextSongIndex]
-            startPlayer(currentSong!!)
+            currentPlaying = currentPlaylist[nextSongIndex]
+            startPlayer(currentPlaying!!)
         }
     }
 
     fun playPreviousSong() {
-        val previousSongIndex = currentPlaylist.indexOf(currentSong) - 1
+        val previousSongIndex = currentPlaylist.indexOf(currentPlaying) - 1
         if (previousSongIndex < 0) {
-            currentSong = currentPlaylist.last()
-            startPlayer(currentSong!!)
+            currentPlaying = currentPlaylist.last()
+            startPlayer(currentPlaying!!)
         }
         else {
-            currentSong = currentPlaylist[previousSongIndex]
-            startPlayer(currentSong!!)
+            currentPlaying = currentPlaylist[previousSongIndex]
+            startPlayer(currentPlaying!!)
         }
     }
-
     fun addRemoveFavorite(song : Song) {
         if (song.liked) {
             favoriteSongs.remove(song)
@@ -208,7 +211,11 @@ class FreezerModel(val deezerService: DeezerService) {
     }
 
 
+//TODO: Deezer Logo
 
+//TODO: Tests
+
+//TODO: go back
 
     }
 

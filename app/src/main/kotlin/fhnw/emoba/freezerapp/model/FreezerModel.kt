@@ -141,8 +141,8 @@ class FreezerModel(val deezerService: DeezerService) {
 
     fun startUp(){
         val list = mutableListOf(27)
-        for (i in 0 until 4){
-            list.add((1..800).shuffled().first())
+        for (i in 0 until 5){
+            list.add((1..900).shuffled().first())
         }
         list.forEach { fetchArtist(it) }
 
@@ -196,12 +196,12 @@ class FreezerModel(val deezerService: DeezerService) {
     fun playPreviousSong() {
         val previousSongIndex = currentPlaylist.indexOf(currentPlaying) - 1
         if (previousSongIndex < 0) {
-            currentPlaying = currentPlaylist.last()
-            startPlayer(currentPlaying!!)
+            selectedSong = currentPlaylist.last()
+            startPlayer(selectedSong!!)
         }
         else {
-            currentPlaying = currentPlaylist[previousSongIndex]
-            startPlayer(currentPlaying!!)
+            selectedSong = currentPlaylist[previousSongIndex]
+            startPlayer(selectedSong!!)
         }
     }
 

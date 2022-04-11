@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fhnw.emoba.R
 import fhnw.emoba.freezerapp.data.*
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
@@ -30,14 +32,14 @@ import fhnw.emoba.freezerapp.model.Tab
 
 @Composable
 fun SearchFab(model: FreezerModel) {
-    FloatingActionButton(backgroundColor = Color.White,onClick = { model.currentScreen = Screen.TABSCREEN })
+    FloatingActionButton(backgroundColor = Color(245,245,245),onClick = { model.currentScreen = Screen.TABSCREEN })
     { Icon(Icons.Filled.Search, "Search") }
 
 }
 
 @Composable
 fun LibraryFAB(model: FreezerModel) {
-    FloatingActionButton(backgroundColor = Color.White,onClick = { model.currentScreen = Screen.LIBRARYSCREEN })
+    FloatingActionButton(backgroundColor = Color(245,245,245),onClick = { model.currentScreen = Screen.LIBRARYSCREEN })
     { Icon(Icons.Filled.LibraryMusic, "Library") }
 
 }
@@ -46,7 +48,7 @@ fun LibraryFAB(model: FreezerModel) {
 fun GoHomeFAB(model: FreezerModel) {
     with(model) {
         FloatingActionButton(
-            backgroundColor = Color.White,
+            backgroundColor = Color(245,245,245),
             onClick = { currentScreen = Screen.HOMESCREEN },
         ) { Icon(Icons.Filled.Home, "")}
     }
@@ -57,6 +59,15 @@ fun Bar(title: String) {
 TopAppBar(title = { Text(title)}, backgroundColor = Color.White)
 }
 
+@Composable
+fun MainBar() {
+    TopAppBar(title = {
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
+            Image(painterResource(R.drawable.deezerlogo),"",modifier = Modifier.size(150.dp),alignment = Alignment.Center)
+        }}, backgroundColor = Color.White)
+
+
+}
 
 
 
@@ -64,13 +75,16 @@ TopAppBar(title = { Text(title)}, backgroundColor = Color.White)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolean=false,artistX: Boolean=false,fave: Boolean =false) {
-    var color: Color = if (model.currentPlaying != song) {
+    val color: Color = if (model.currentPlaying != song) {
         Color.White
     }
         else{
-            Color(208,213,251)
+            Color(201,213,233)
 
     }
+
+
+
     with(song) {
         Card(
 
@@ -108,8 +122,13 @@ fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolea
 
                 ) {
 
-                Image(bitmap = albumImage, contentDescription = "", Modifier.size(100.dp).padding(5.dp))
-                Column(modifier            = Modifier.padding(10.dp).width(170.dp),
+                Image(bitmap = albumImage, contentDescription = "",
+                    Modifier
+                        .size(100.dp)
+                        .padding(5.dp))
+                Column(modifier            = Modifier
+                    .padding(10.dp)
+                    .width(170.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     Heading(title)
                     Box() {
@@ -157,18 +176,23 @@ fun CurrentSongPane(model: FreezerModel){
 
         Card(shape = RoundedCornerShape(30.dp),
             elevation = 10.dp,
-            modifier = Modifier.fillMaxWidth().background(Color.Transparent)) {
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.Transparent)) {
 
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 10.dp)
+
+
                     .clickable { currentScreen = Screen.PLAYERSCREEN }
-                    .background(Color.White),
+                    .background(Color(245,245,245)),
                 Arrangement.SpaceEvenly,
             ) {
                 Column(
-                    Modifier.padding(10.dp).width(150.dp)
+                    Modifier
+                        .padding(10.dp)
+                        .width(150.dp)
                 ) {
                     currentPlaying?.let { Text(it.title,maxLines = 1,overflow = TextOverflow.Ellipsis) }
                     currentPlaying?.let { Text(it.artist,maxLines = 1) }
@@ -219,6 +243,26 @@ fun Subheading(text: String, modifier: Modifier) {
         maxLines = 1,
         overflow = TextOverflow.Ellipsis
     )
+}
+
+@Composable
+fun SongListHeading(text: String){
+    Text(text     = text,
+        fontSize = 30.sp,
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis
+    )
+
+}
+@Composable
+fun SongListSubHeading(text: String){
+    Text(text     = text,
+        fontSize = 20.sp,
+        modifier = Modifier.padding(bottom = 10.dp),
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis
+    )
+
 }
 
 

@@ -54,7 +54,7 @@ private fun Body(model: FreezerModel) {
             Arrangement.Center,
             Alignment.CenterHorizontally,) {
 
-            model.currentArtist?.let { Text(text = it.name) }
+            model.currentArtist?.let { SongListHeading(text = it.name) }
             Spacer(Modifier.height(12.dp))
             Box(
 

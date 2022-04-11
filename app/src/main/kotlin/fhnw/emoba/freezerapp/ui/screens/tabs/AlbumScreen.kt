@@ -21,8 +21,7 @@ import fhnw.emoba.freezerapp.data.Album
 import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
-import fhnw.emoba.freezerapp.ui.screens.AlbumPane
-import fhnw.emoba.freezerapp.ui.screens.SongPane
+import fhnw.emoba.freezerapp.ui.screens.*
 
 @Composable
 fun AlbumScreen(model: FreezerModel){
@@ -47,6 +46,7 @@ fun AlbumScreen(model: FreezerModel){
 private fun TopBar(model: FreezerModel,album: Album) {
     with(model) {
         TopAppBar(
+            backgroundColor = Color.White,
             title = { Text(album.title) },
             navigationIcon = {
                 IconButton(onClick = { currentScreen = Screen.TABSCREEN
@@ -73,7 +73,7 @@ Column(
         Arrangement.Center,
         Alignment.CenterHorizontally,) {
 
-        model.currentAlbum?.let { Text(text = it.title) }
+        model.currentAlbum?.let { SongListHeading(text = it.title) }
         Spacer(Modifier.height(12.dp))
         Box(
 
@@ -87,7 +87,7 @@ Column(
         }
         Spacer(Modifier.height(12.dp))
 
-        model.currentAlbum?.let { Text(text = it.artist) }
+        model.currentAlbum?.let { SongListSubHeading(text = it.artist) }
 
 
     }

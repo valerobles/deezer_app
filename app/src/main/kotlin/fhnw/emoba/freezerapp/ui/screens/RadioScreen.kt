@@ -37,7 +37,7 @@ fun RadioScreen(model: FreezerModel){
         Scaffold(
             backgroundColor = Color.Transparent,
         content = { Body(model) }, floatingActionButton = { GoHomeFAB(model = model) },
-        topBar = { model.currentRadio?.let { Bar(model.currentRadio!!.title) } }
+
     )}
 
 }
@@ -47,6 +47,7 @@ private fun TopBar(model: FreezerModel,radio: Radio) {
     with(model) {
         TopAppBar(
             title = { Text(radio.title) },
+            backgroundColor = Color.White,
             navigationIcon = {
                 IconButton(onClick = { currentScreen = Screen.HOMESCREEN
                 }) {
@@ -72,7 +73,7 @@ private fun Body(model: FreezerModel) {
             Arrangement.Center,
             Alignment.CenterHorizontally,) {
 
-            model.currentRadio?.let { Text(text = it.title) }
+            model.currentRadio?.let { SongListHeading(text = it.title) }
             Spacer(Modifier.height(12.dp))
             Box(
 

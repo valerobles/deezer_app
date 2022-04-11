@@ -34,7 +34,7 @@ fun LibrayScreen(model: FreezerModel) {
         Scaffold(
             backgroundColor = Color.Transparent,
             content = { Body(model) },
-            topBar = { model.currentPlaying?.let { TopBar(model = model, song = it) } },
+
             bottomBar = {
                 if (model.playerMode)
                     CurrentSongPane(model = model)
@@ -43,21 +43,7 @@ fun LibrayScreen(model: FreezerModel) {
     }
 }
 
-@Composable
-private fun TopBar(model: FreezerModel,song: Song) {
-    with(model) {
-        TopAppBar(
-            title = { Text(song.title) },
-            backgroundColor = Color.White,
-            navigationIcon = {
-                IconButton(onClick = { currentScreen = Screen.HOMESCREEN
-                }) {
-                    Icon(Icons.Filled.ArrowBack, "Back")
-                }
-            }
-        )
-    }
-}
+
 
 @Composable
 private fun Body(model: FreezerModel) {
@@ -72,8 +58,8 @@ private fun Body(model: FreezerModel) {
                 .fillMaxWidth(),
             Arrangement.Center,
             Alignment.CenterHorizontally,) {
-
-            Heading(text = "Your favorite songs") 
+            Spacer(Modifier.height(20.dp))
+            SongListHeading(text = "Your favorite songs")
             Spacer(Modifier.height(12.dp))
             
 

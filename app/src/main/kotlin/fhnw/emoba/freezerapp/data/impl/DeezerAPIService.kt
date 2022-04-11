@@ -76,7 +76,7 @@ class DeezerAPIService : DeezerService{
         val data = json.getJSONArray("data")
 
         for (i in 0 until data.length()) {
-            listOfSongs.add(Song(data.getJSONObject(i), radio.title, radio.picture_medium))
+            listOfSongs.add(Song(data.getJSONObject(i), radio.picture_medium))
             listOfSongs.last().loadImage()
         }
         return listOfSongs.toList()
@@ -98,7 +98,7 @@ class DeezerAPIService : DeezerService{
         val data = json.getJSONArray("data")
 
         for (i in 0 until data.length()) {
-            listOfSongs.add(Song(data.getJSONObject(i), artist.name, artist.picture_medium))
+            listOfSongs.add(Song(data.getJSONObject(i),artist_picture = artist.picture_medium))
             listOfSongs.last().loadImage()
         }
         return listOfSongs.toList()

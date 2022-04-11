@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,20 +42,20 @@ fun HomeScreen(model: FreezerModel) {
         Scaffold(
             backgroundColor = Color.Transparent,
 
-            topBar = {HomeBar(model.title) },
+            topBar = {MainBar() },
             bottomBar = {if (model.playerMode)
                              CurrentSongPane(model = model)   },
             floatingActionButton = {
                 LibSearchFab(model) },
             floatingActionButtonPosition = FabPosition.End,
-            content = {Body(model.listOfSongs,model) },
+            content = {Body(model) },
         )
     }
 
 }
 
 @Composable
-private fun Body(list: List<Song>,model: FreezerModel) {
+private fun Body(model: FreezerModel) {
     with(model) {
         when {
             isLoading -> LoadingBox("Songs are being loaded")
@@ -67,15 +68,7 @@ private fun Body(list: List<Song>,model: FreezerModel) {
 
 }
 
-@Composable
-private fun HomeBar(title: String) {
- TopAppBar(title = {
-     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-         Image(painterResource(R.drawable.deezerlogo),"",modifier = Modifier.size(150.dp),alignment = Alignment.Center)
-     }}, backgroundColor = Color.White)
 
-
-}
 
 @Composable
 private fun HomeBody(model: FreezerModel){
@@ -144,7 +137,8 @@ fun FavouritesPane(song: Song, model: FreezerModel,fave: Boolean =false) {
                 .clickable {
 
                     model.currentScreen = Screen.PLAYERSCREEN
-                    model.currentPlaying = song
+                    //model.currentPlaying = song
+                    model.selectedSong = song
                     model.playerMode = true
 
                     model.currentPlaylist = model.favoriteSongs
@@ -305,7 +299,7 @@ fun ArtistPane(artist: Artist, model: FreezerModel){
 
             }
 
-            Text(text = name, overflow = TextOverflow.Ellipsis)
+            Text(text = name, maxLines = 1,overflow = TextOverflow.Ellipsis,textAlign = TextAlign.Center)
         }
     }
 

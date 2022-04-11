@@ -18,7 +18,7 @@ import fhnw.emoba.freezerapp.ui.screens.Bar
 fun TabsScreen(model: FreezerModel) {
     MaterialTheme {
         Scaffold(
-            topBar = { Bar(model.title) },
+            topBar = { MainBar() },
             floatingActionButton = { GoHomeFAB(model) },
             floatingActionButtonPosition = FabPosition.End,
             content = { Body(model) },

@@ -58,5 +58,15 @@ data class Song(val id: Int,
         songPreview = json.getString("preview"),
     )
 
+    constructor(json: JSONObject,artist_picture: String) : this (
+        id = json.getInt("id"),
+        title = json.getString("title"),
+        album_cover = json.getJSONObject("album").getString("cover_medium"),
+        album_title = json.getJSONObject("album").getString("title"),
+        artist = json.getJSONObject("artist").getString("name"),
+        artist_picture_medium = artist_picture,
+        songPreview = json.getString("preview"),
+    )
+
 
 }

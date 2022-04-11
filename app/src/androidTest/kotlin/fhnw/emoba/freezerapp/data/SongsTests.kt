@@ -1,40 +1,50 @@
 package fhnw.emoba.freezerapp.data
 
-import androidx.compose.ui.graphics.ImageBitmap
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.json.JSONObject
 import org.junit.Test
 
 internal class SongsTests {
-    private val AlbumsAsString = """
+    private val SongAsString = """
         {
-        "id": "302127",
-        "title": "Discovery",
-        "cover": "https://api.deezer.com/album/302127/image",
-        "cover_medium": "https://e-cdns-images.dzcdn.net/images/cover/2e018122cb56986277102d2041a592c8/250x250-000000-80-0-0.jpg",
-        "artist": {
-                    "name": "Daft Punk",
-                   }
-        "tracklist": "https://api.deezer.com/album/302127/tracks",
+        "id": "1109737",
+     
+      "title": "The Real Slim Shady",
+
+      "preview": "https://cdns-preview-d.dzcdn.net/stream/c-d28ee67c24d60e740866c7709d772f55-12.mp3",
+     
+      "artist": {
+         "name": "Eminem",
+         "picture_medium": "https://e-cdns-images.dzcdn.net/images/artist/19cc38f9d69b352f718782e7a22f9c32/250x250-000000-80-0-0.jpg"
+      },
+      "album": {
+         "title": "Curtain Call: The Hits",
+        "cover_medium": "https://e-cdns-images.dzcdn.net/images/cover/e2b36a9fda865cb2e9ed1476b6291a7d/250x250-000000-80-0-0.jpg"
+      }
+    }
+    
         """.trimIndent()
 
     @Test
     fun testConstructor() {
 
-        val albumAsJSON = JSONObject(AlbumsAsString)
+        val songAsJSON = JSONObject(SongAsString)
 
 
-        val album = Album(albumAsJSON)
+
+        val song = Song(songAsJSON)
 
 
-        with(album) {
-            assertEquals("Discovery", title)
-            assertEquals(302127, id)
-            assertEquals("Daft Punk", artist)
-            assertTrue(tracklist.isNotEmpty())
-            assertEquals(cover_medium,"https://e-cdns-images.dzcdn.net/images/cover/2e018122cb56986277102d2041a592c8/250x250-000000-80-0-0.jpg")
+        with(song) {
+            assertEquals("The Real Slim Shady", title)
+            assertEquals(1109737, id)
+            assertEquals("Eminem", artist)
+            assertTrue(songPreview.isNotEmpty())
+            assertEquals(album_cover,"https://e-cdns-images.dzcdn.net/images/cover/e2b36a9fda865cb2e9ed1476b6291a7d/250x250-000000-80-0-0.jpg")
         }
+
+
     }
 
 }

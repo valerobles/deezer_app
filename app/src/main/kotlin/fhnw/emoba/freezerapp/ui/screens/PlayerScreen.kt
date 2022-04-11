@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,10 +39,10 @@ fun PlayerScreen(model: FreezerModel){
 
         Scaffold(
             backgroundColor = Color.Transparent,
-            topBar = { model.currentPlaying?.let { TopBar(model = model,song = it) } },
+            topBar = { model.selectedSong?.let { TopBar(model = model,song = it) } },
             floatingActionButton = { GoHomeFAB(model) },
             floatingActionButtonPosition = FabPosition.End,
-            content = { model.currentPlaying?.let { it1 -> Body(it1,model) } },
+            content = { model.selectedSong?.let { it1 -> Body(it1,model) } },
         )
     }
 
@@ -98,6 +99,7 @@ private fun Body(song: Song, model: FreezerModel){
                 Modifier.fillMaxWidth(),
                 Arrangement.SpaceEvenly,
             ) {
+
                 IconButton(onClick = {model.playPreviousSong() }) { // playPreviousSong()
                     Icon(Icons.Filled.SkipPrevious, "",
                         modifier = Modifier.size(40.dp),
@@ -107,7 +109,7 @@ private fun Body(song: Song, model: FreezerModel){
                     model.startStopPlayer(song) }) {
 
                     if (model.playerMode) {
-                        if (!model.isPlaying)
+                        if (!model.isPlaying || song != model.currentPlaying)
                             Icon(
                                 Icons.Filled.PlayArrow, "",
                                 modifier = Modifier.size(60.dp),
@@ -125,6 +127,8 @@ private fun Body(song: Song, model: FreezerModel){
                         modifier = Modifier.size(40.dp),
                     )
                 }
+
+
             }
             Row(
                 Modifier.fillMaxWidth(),
@@ -136,6 +140,10 @@ private fun Body(song: Song, model: FreezerModel){
                         Icon(Icons.Filled.Favorite, "")
                     else
                         Icon(Icons.Outlined.FavoriteBorder, "")
+                }
+
+                IconButton(onClick = { model.replay()}) {
+                    Icon(Icons.Outlined.Replay, "")
                 }
             }
 

@@ -20,10 +20,11 @@ interface DeezerService {
 
     fun requestAlbumSongs(album: Album,tracklist: String): List<Song>
 
-    fun requestRatio(): List<Radio>
+    fun requestRadio(): List<Radio>
 
     fun requestRadioSongs(radio: Radio, tracklist: String): List<Song>
 
     fun requestArtistSongs(artist: Artist, tracklist: String): List<Song>
+
     fun requestArtist(artist: Int, listOfArtists: MutableList<Artist>): List<Artist>
 }

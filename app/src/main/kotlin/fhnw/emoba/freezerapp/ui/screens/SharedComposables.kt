@@ -1,5 +1,6 @@
 package fhnw.emoba.freezerapp.ui.screens
 
+import android.graphics.fonts.FontFamily
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -53,19 +54,9 @@ fun GoHomeFAB(model: FreezerModel) {
 
 @Composable
 fun Bar(title: String) {
-TopAppBar(title = { Text(title)}, backgroundColor = Color.White,)
+TopAppBar(title = { Text(title)}, backgroundColor = Color.White)
 }
 
-
-
-@Composable
-fun BackToScreenIcon(model: FreezerModel, tab: Tab) {
-    with(model) {
-        IconButton(onClick = {  currentTab =tab }) {
-            Icon(Icons.Filled.ArrowBack, "Back")
-        }
-    }
-}
 
 
 
@@ -73,8 +64,16 @@ fun BackToScreenIcon(model: FreezerModel, tab: Tab) {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolean=false,artistX: Boolean=false,fave: Boolean =false) {
+    var color: Color = if (model.currentPlaying != song) {
+        Color.White
+    }
+        else{
+            Color(208,213,251)
+
+    }
     with(song) {
         Card(
+
             modifier  = Modifier
 
                 .padding(top = 10.dp, start = 10.dp, end = 10.dp)
@@ -82,8 +81,8 @@ fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolea
                 .clickable {
 
                     model.currentScreen = Screen.PLAYERSCREEN
-                   // model.selectedSong = song
-                    model.currentPlaying = song
+                    model.selectedSong = song
+                    //model.currentPlaying = song
                     model.playerMode = true
                     if (radio)
                         model.currentPlaylist = model.listOfRadioSongs
@@ -99,11 +98,14 @@ fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolea
 
 
             elevation = 4.dp,
+            backgroundColor = color
             
 
         ) {
             Row(modifier            = Modifier.padding(10.dp),
-                Arrangement.SpaceBetween
+                Arrangement.SpaceBetween,
+
+
                 ) {
 
                 Image(bitmap = albumImage, contentDescription = "", Modifier.size(100.dp).padding(5.dp))
@@ -139,188 +141,6 @@ fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolea
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun FavouritesPane(song: Song, model: FreezerModel,fave: Boolean =false) {
-    with(song) {
-        Card(
-            modifier  = Modifier
-
-                .padding(top = 10.dp, start = 10.dp, end = 10.dp)
-                .fillMaxWidth()
-                .clickable {
-
-                    model.currentScreen = Screen.PLAYERSCREEN
-                    model.currentPlaying = song
-                    model.playerMode = true
-
-                    model.currentPlaylist = model.favoriteSongs
-
-                },
-
-
-            elevation = 4.dp,
-
-        ) {
-            Row(modifier            = Modifier.padding(10.dp),
-                Arrangement.SpaceBetween
-                ) {
-                Image(bitmap = albumImage, contentDescription = "", Modifier.size(80.dp).padding(5.dp))
-                Column(modifier            = Modifier.padding(10.dp).width(90.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(text=title, fontSize = 19.sp,maxLines = 1,overflow = TextOverflow.Ellipsis)
-                    Box() {
-                        Subheading(text     = artist,
-                            modifier = Modifier.align(Alignment.CenterStart))
-
-                    }
-
-
-                }
-                Column(modifier            = Modifier.padding(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    IconButton(
-                        onClick = { model.addRemoveFavorite(song) }) {
-                        if (song.liked)
-                            Icon(Icons.Filled.Favorite, "")
-                        else
-                            Icon(Icons.Outlined.FavoriteBorder, "")
-                }
-
-                }
-
-
-
-            }
-
-        }
-    }
-}
-
-
-// When searching albums
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun AlbumPane(album: Album, model: FreezerModel) {
-    with(album) {
-        Card(modifier  = Modifier
-            .padding(top = 12.dp, start = 12.dp, end = 12.dp)
-            .clickable {
-
-                model.currentScreen = Screen.ALBUMSCREEN
-                model.currentAlbum = album
-                model.playerMode = false
-                model.fetchAlbumSongs()
-
-            },
-            elevation = 4.dp,
-        ) {
-            Row(modifier            = Modifier.padding(10.dp)) {
-                Column(modifier            = Modifier.padding(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Heading(title)
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Subheading(text     = artist,
-                            modifier = Modifier.align(Alignment.CenterStart))
-
-                    }
-                }
-                Image(bitmap = albumImage, contentDescription = "")
-            }
-
-        }
-    }
-}
-
-@Composable
-fun LibSearchFab(model: FreezerModel){
-
-    Column(
-       verticalArrangement = Arrangement.Center,
-
-    ) {
-
-        SearchFab(model = model)
-        Spacer(Modifier.size(16.dp))
-        LibraryFAB(model = model)
-    }
-
-}
-
-@Composable
-fun RadioPane(radio: Radio, model: FreezerModel){
-
-    with(radio) {
-        Column(
-            Modifier,
-            Arrangement.Center,
-            Alignment.CenterHorizontally,
-        ) {
-            Card(modifier  = Modifier
-                .padding(top = 10.dp, start = 12.dp, end = 12.dp)
-                .height(100.dp)
-                .width(100.dp)
-                .clickable {
-                    model.currentScreen = Screen.RADIOSCREEN
-                    model.currentRadio = radio
-                    model.fetchRadioSongs()
-                },
-                elevation = 7.dp,
-                shape = RoundedCornerShape(30.dp)
-
-            ) {
-
-                Image(radioImage,
-                    contentDescription = "",
-                    modifier = Modifier.height(200.dp))
-
-
-            }
-
-            Text(text = title)
-        }
-        }
-
-    }
-@Composable
-fun ArtistPane(artist: Artist, model: FreezerModel){
-
-    with(artist) {
-        Column(
-            Modifier,
-            Arrangement.Center,
-            Alignment.CenterHorizontally,
-        ) {
-            Card(modifier  = Modifier
-                .padding(top = 10.dp, start = 12.dp, end = 12.dp)
-                .height(100.dp)
-                .width(100.dp)
-                .clickable {
-                    model.currentScreen = Screen.ARTISTSCREEN
-                    model.currentArtist = artist
-                    model.fetchArtistSongs()
-                },
-                elevation = 7.dp,
-                shape = RoundedCornerShape(50.dp)
-
-            ) {
-
-                Image(artistImage,
-                    contentDescription = "",
-                    modifier = Modifier.height(200.dp))
-
-
-            }
-
-            Text(text = name, overflow = TextOverflow.Ellipsis)
-        }
-        }
-
-    }
-
-
-
-
 fun requestImage(url: String): ImageBitmap {
     return try {
         bitmap(url).asImageBitmap()
@@ -330,22 +150,6 @@ fun requestImage(url: String): ImageBitmap {
 }
 
 
-fun currentlyPlaying(model: FreezerModel): Boolean {
-    with(model) {
-        when (isPlaying) {
-            true -> {
-                playerBarOn = true
-            }
-            false -> {
-                playerBarOn = false
-            }
-
-        }
-
-        return playerBarOn;
-
-    }
-}
 
 @Composable
 fun CurrentSongPane(model: FreezerModel){
@@ -403,7 +207,8 @@ fun CurrentSongPane(model: FreezerModel){
 fun Heading(text: String) {
     Text(text = text,
         fontSize = 25.sp,
-        maxLines = 1,overflow = TextOverflow.Ellipsis)
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis)
 }
 
 @Composable
@@ -411,7 +216,8 @@ fun Subheading(text: String, modifier: Modifier) {
     Text(text     = text,
         fontSize = 20.sp,
         modifier = modifier,
-        maxLines = 1,overflow = TextOverflow.Ellipsis
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis
     )
 }
 

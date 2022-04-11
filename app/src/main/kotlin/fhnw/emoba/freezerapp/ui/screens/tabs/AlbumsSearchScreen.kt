@@ -3,6 +3,7 @@ package fhnw.emoba.freezerapp.ui.screens
 import android.view.KeyEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -92,7 +93,7 @@ private fun AlbumSearch(model: FreezerModel, modifier: Modifier) {
                             fetchAlbums()
                         })
                         {
-                            Icon(Icons.Filled.Clear, "löschen")
+                            Icon(Icons.Filled.Clear, "löschen",Modifier.clickable { searchText ="" })
                         }
                     },
                     keyboardOptions = KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Search),
@@ -127,13 +128,13 @@ private fun AlbumSearch(model: FreezerModel, modifier: Modifier) {
 private fun AlbumList(model: FreezerModel, modifier: Modifier) {
     with(model) {
         when {
-            isLoading -> LoadingBox("Alben werden geladen")
+            isLoading -> LoadingBox("Albums are being loaded")
             else ->
 
                 Box(modifier) {
                     if (listOfAlbums.isEmpty()) {
                         Text(
-                            text = "Keine Alben gefunden",
+                            text = "No albums found",
                             style = MaterialTheme.typography.h6,
                             modifier = Modifier.padding(10.dp)
                         )

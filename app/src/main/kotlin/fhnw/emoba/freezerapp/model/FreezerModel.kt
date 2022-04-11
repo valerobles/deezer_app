@@ -103,7 +103,7 @@ class FreezerModel(val deezerService: DeezerService) {
         isLoading = true
         listOfRadio = emptyList()
         modelScope.launch {
-            listOfRadio = deezerService.requestRatio().subList(0,6)
+            listOfRadio = deezerService.requestRadio().subList(0,6)
             isLoading = false
         }
     }
@@ -134,7 +134,7 @@ class FreezerModel(val deezerService: DeezerService) {
         isLoading = true
         modelScope.launch {
             listOfArtists =
-                deezerService.requestArtist(artistID,listOfArtists) as MutableList<Artist> // TODO only add one
+                deezerService.requestArtist(artistID,listOfArtists) as MutableList<Artist>
             isLoading = false
         }
     }
@@ -161,9 +161,14 @@ class FreezerModel(val deezerService: DeezerService) {
 
     private fun startPlayer(song : Song) {
 
-        player.reset()
-        player.setDataSource(song.songPreview)
-        player.prepareAsync()
+       if (currentPlaying != song) {
+           currentPlaying = song
+           player.reset()
+           player.setDataSource(currentPlaying!!.songPreview)
+           player.prepareAsync()
+           player.start()
+           isPlaying = true
+       } else
         player.start()
         isPlaying = true
 
@@ -179,12 +184,12 @@ class FreezerModel(val deezerService: DeezerService) {
     fun playNextSong() {
         val nextSongIndex = currentPlaylist.indexOf(currentPlaying) + 1
         if (nextSongIndex >= currentPlaylist.size) {
-            currentPlaying = currentPlaylist.first()
-            startPlayer(currentPlaying!!)
+            selectedSong = currentPlaylist.first()
+            startPlayer(selectedSong!!)
         }
         else {
-            currentPlaying = currentPlaylist[nextSongIndex]
-            startPlayer(currentPlaying!!)
+            selectedSong = currentPlaylist[nextSongIndex]
+            startPlayer(selectedSong!!)
         }
     }
 
@@ -199,6 +204,14 @@ class FreezerModel(val deezerService: DeezerService) {
             startPlayer(currentPlaying!!)
         }
     }
+
+    fun replay() {
+        player.reset()
+        player.setDataSource(currentPlaying!!.songPreview)
+        player.prepareAsync()
+        player.start()
+    }
+
     fun addRemoveFavorite(song : Song) {
         if (song.liked) {
             favoriteSongs.remove(song)
@@ -211,11 +224,15 @@ class FreezerModel(val deezerService: DeezerService) {
     }
 
 
+
+
 //TODO: Deezer Logo
 
 //TODO: Tests
 
 //TODO: go back
+
+// TODO:
 
     }
 

@@ -3,6 +3,7 @@ package fhnw.emoba.freezerapp.ui.screens
 import android.view.KeyEvent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -91,7 +93,7 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
                             fetchSongs()
                         })
                         {
-                            Icon(Icons.Filled.Clear, "löschen")
+                            Icon(Icons.Filled.Clear, "löschen", Modifier.clickable { searchText ="" })
                         }
                     },
                     keyboardOptions = KeyboardOptions(imeAction = androidx.compose.ui.text.input.ImeAction.Search),
@@ -105,7 +107,7 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
                             fetchSongs()
                         }
                     ),
-                    placeholder = { Text("Suche") },
+                    placeholder = { Text("Search") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .onKeyEvent {
@@ -126,13 +128,13 @@ private fun SongSearch(model: FreezerModel, modifier: Modifier) {
 private fun SongList(model: FreezerModel, modifier: Modifier) {
     with(model) {
         when {
-            isLoading -> LoadingBox("Lieder werden geladen")
+            isLoading -> LoadingBox("Songs are being loaded")
             else ->
 
                 Box(modifier) {
                     if (listOfSongs.isEmpty()) {
                         Text(
-                            text = "Keine Lieder gefunden",
+                            text = "No songs found",
                             style = MaterialTheme.typography.h6,
                             modifier = Modifier.padding(10.dp)
                         )

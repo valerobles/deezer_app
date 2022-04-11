@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.model.Tab
@@ -30,7 +31,7 @@ private fun Body(model: FreezerModel){
 
     with(model) {
         Column {
-            TabRow(selectedTabIndex = currentTab.ordinal) {
+            TabRow(selectedTabIndex = currentTab.ordinal,backgroundColor = Color.White) {
                 for (tab in Tab.values()) {
                     Tab(
                         text = { Text(tab.title) },

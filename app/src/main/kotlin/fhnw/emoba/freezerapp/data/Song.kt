@@ -59,24 +59,4 @@ data class Song(val id: Int,
     )
 
 
-
-    fun asJson(): String {
-        return """
-            {
-            "id":       $id,
-            "title":    $title
-            "album":    {
-                        "cover_medium": $album_cover
-                        "title":        $album_title
-                        }
-            "artist":   {
-                        "name":             $artist
-        
-                        "picture_medium":   $artist_picture_medium
-                        }
-            "preview":  $songPreview
-
-            }
-    """.trimIndent()
-    }
 }

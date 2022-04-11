@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import fhnw.emoba.R
 import fhnw.emoba.freezerapp.data.Song
 import fhnw.emoba.freezerapp.model.FreezerModel
@@ -87,7 +88,8 @@ private fun Body(model: FreezerModel) {
             }
         }
         else
-            Text(text = "your library is empty, go like some songs")
+            Text(text = "your library is empty :( \n go like some songs <3",modifier = Modifier.padding(top = 50.dp),
+                fontSize = 20.sp)
             
 
     }

@@ -57,7 +57,7 @@ class DeezerAPIService : DeezerService{
         }
         return listOfSongs.toList()
     }
-    override fun requestRatio(): List<Radio> {
+    override fun requestRadio(): List<Radio> {
         val baseURL = "https://api.deezer.com/radio"
         val listOfRadios: MutableList<Radio> = mutableListOf()
         val json = JSONObject(content(baseURL))

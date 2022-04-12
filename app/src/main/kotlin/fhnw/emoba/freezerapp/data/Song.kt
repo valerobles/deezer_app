@@ -17,7 +17,6 @@ data class Song(val id: Int,
                 val album_title: String = "",
                 val artist: String,
                 val artist_picture_medium: String,
-                var liked : Boolean = false,
                 var songPreview : String) {
 
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -25,6 +24,7 @@ data class Song(val id: Int,
 
     var albumImage by mutableStateOf(DEFAULT_ICON.asImageBitmap())
     var artistImage by mutableStateOf(DEFAULT_ICON.asImageBitmap())
+    var liked by mutableStateOf(false)
 
     fun loadImage(){
         modelScope.launch {
@@ -37,7 +37,7 @@ data class Song(val id: Int,
 
 
 
-    constructor(json: JSONObject, liked: Boolean = false) : this (
+    constructor(json: JSONObject) : this (
         id = json.getInt("id"),
         title = json.getString("title"),
         album_cover = json.getJSONObject("album").getString("cover_medium"),
@@ -45,7 +45,7 @@ data class Song(val id: Int,
         artist = json.getJSONObject("artist").getString("name"),
         artist_picture_medium = json.getJSONObject("artist").getString("picture_medium"),
         songPreview = json.getString("preview"),
-        liked = liked
+
     )
 
     constructor(json: JSONObject,album_title: String, album_cover: String) : this (

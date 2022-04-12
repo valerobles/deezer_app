@@ -100,7 +100,7 @@ private fun Body(song: Song, model: FreezerModel){
                 Arrangement.SpaceEvenly,
             ) {
 
-                IconButton(onClick = {model.playPreviousSong() }) { // playPreviousSong()
+                IconButton(onClick = {model.playPreviousSong() }) {
                     Icon(Icons.Filled.SkipPrevious, "",
                         modifier = Modifier.size(40.dp),
                     )

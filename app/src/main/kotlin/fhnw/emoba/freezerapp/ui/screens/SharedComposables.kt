@@ -1,6 +1,5 @@
 package fhnw.emoba.freezerapp.ui.screens
 
-import android.graphics.fonts.FontFamily
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,9 +24,6 @@ import fhnw.emoba.R
 import fhnw.emoba.freezerapp.data.*
 import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
-import fhnw.emoba.freezerapp.model.Tab
-
-
 
 
 @Composable
@@ -54,10 +50,6 @@ fun GoHomeFAB(model: FreezerModel) {
     }
 }
 
-@Composable
-fun Bar(title: String) {
-TopAppBar(title = { Text(title)}, backgroundColor = Color.White)
-}
 
 @Composable
 fun MainBar() {
@@ -105,7 +97,7 @@ fun SongPane(song: Song, model: FreezerModel,radio: Boolean =false,album: Boolea
                     else if (artistX)
                         model.currentPlaylist = model.listOfArtistsSongs
                     else if (fave)
-                        model.currentPlaylist = model.favoriteSongs
+                        model.currentPlaylist = model.listOfFavoriteSongs
                     else
                         model.currentPlaylist = model.listOfSongs
                 },
@@ -170,6 +162,7 @@ fun requestImage(url: String): ImageBitmap {
 
 
 
+// When song is playing, show song bar at the bottom
 @Composable
 fun CurrentSongPane(model: FreezerModel){
     with(model){
@@ -225,6 +218,40 @@ fun CurrentSongPane(model: FreezerModel){
 
     }
 
+}
+
+// When searching albums
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun AlbumPane(album: Album, model: FreezerModel) {
+    with(album) {
+        Card(modifier  = Modifier
+            .padding(top = 12.dp, start = 12.dp, end = 12.dp)
+            .clickable {
+
+                model.currentScreen = Screen.ALBUMSCREEN
+                model.currentAlbum = album
+                model.playerMode = false
+                model.fetchAlbumSongs()
+
+            },
+            elevation = 4.dp,
+        ) {
+            Row(modifier            = Modifier.padding(10.dp)) {
+                Column(modifier            = Modifier.padding(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Heading(title)
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Subheading(text     = artist,
+                            modifier = Modifier.align(Alignment.CenterStart))
+
+                    }
+                }
+                Image(bitmap = albumImage, contentDescription = "")
+            }
+
+        }
+    }
 }
 
 @Composable

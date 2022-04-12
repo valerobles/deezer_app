@@ -42,21 +42,7 @@ fun RadioScreen(model: FreezerModel){
 
 }
 
-@Composable
-private fun TopBar(model: FreezerModel,radio: Radio) {
-    with(model) {
-        TopAppBar(
-            title = { Text(radio.title) },
-            backgroundColor = Color.White,
-            navigationIcon = {
-                IconButton(onClick = { currentScreen = Screen.HOMESCREEN
-                }) {
-                    Icon(Icons.Filled.ArrowBack, "Back")
-                }
-            }
-        )
-    }
-}
+
 
 
 @Composable

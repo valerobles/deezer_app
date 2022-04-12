@@ -22,8 +22,6 @@ class FreezerModel(val deezerService: DeezerService) {
 
     var selectedSong: Song? by mutableStateOf(null)
 
-    var nextSong: Song? by mutableStateOf(null)
-    var lastSong: Song? by mutableStateOf(null)
 
     var listOfSongs: List<Song> by mutableStateOf(emptyList())
     var searchText by mutableStateOf("")
@@ -38,7 +36,7 @@ class FreezerModel(val deezerService: DeezerService) {
     var listOfRadioSongs: List<Song> by mutableStateOf(emptyList())
     var currentRadio: Radio? by mutableStateOf(null)
 
-    var playerBarOn by mutableStateOf(false)
+
 
     var currentPlaylist: List<Song> by mutableStateOf(emptyList())
 
@@ -47,7 +45,7 @@ class FreezerModel(val deezerService: DeezerService) {
     var currentArtist: Artist? by mutableStateOf(null)
 
 
-    var favoriteSongs: MutableList<Song> = mutableStateListOf()
+    var listOfFavoriteSongs: MutableList<Song> = mutableStateListOf()
 
 
 
@@ -139,6 +137,7 @@ class FreezerModel(val deezerService: DeezerService) {
         }
     }
 
+    // Have artists ready when starting application. Everytime you get new artists
     fun startUp(){
         val list = mutableListOf(27)
         for (i in 0 until 5){
@@ -214,11 +213,11 @@ class FreezerModel(val deezerService: DeezerService) {
 
     fun addRemoveFavorite(song : Song) {
         if (song.liked) {
-            favoriteSongs.remove(song)
+            listOfFavoriteSongs.remove(song)
             song.liked = false
         }
         else {
-            favoriteSongs.add(song)
+            listOfFavoriteSongs.add(song)
             song.liked = true
         }
     }

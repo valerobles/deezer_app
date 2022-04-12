@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fhnw.emoba.R
-import fhnw.emoba.freezerapp.data.Album
 import fhnw.emoba.freezerapp.data.Artist
 import fhnw.emoba.freezerapp.data.Radio
 import fhnw.emoba.freezerapp.data.Song
@@ -46,7 +45,7 @@ fun HomeScreen(model: FreezerModel) {
             bottomBar = {if (model.playerMode)
                              CurrentSongPane(model = model)   },
             floatingActionButton = {
-                LibSearchFab(model) },
+                LibSearchFAB(model) },
             floatingActionButtonPosition = FabPosition.End,
             content = {Body(model) },
         )
@@ -85,11 +84,11 @@ private fun HomeBody(model: FreezerModel){
                 }
 
             }
-            if(favoriteSongs.size != 0) {
+            if(listOfFavoriteSongs.size != 0) {
                 Spacer(Modifier.height(50.dp))
                 SubheadingHome(text = "Your favourite songs")
                 LazyRow {
-                    items(favoriteSongs) {
+                    items(listOfFavoriteSongs) {
                         FavouritesPane(song = it, model = model)
                     }
 
@@ -141,7 +140,7 @@ fun FavouritesPane(song: Song, model: FreezerModel,fave: Boolean =false) {
                     model.selectedSong = song
                     model.playerMode = true
 
-                    model.currentPlaylist = model.favoriteSongs
+                    model.currentPlaylist = model.listOfFavoriteSongs
 
                 },
 
@@ -185,42 +184,10 @@ fun FavouritesPane(song: Song, model: FreezerModel,fave: Boolean =false) {
 }
 
 
-// When searching albums
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun AlbumPane(album: Album, model: FreezerModel) {
-    with(album) {
-        Card(modifier  = Modifier
-            .padding(top = 12.dp, start = 12.dp, end = 12.dp)
-            .clickable {
 
-                model.currentScreen = Screen.ALBUMSCREEN
-                model.currentAlbum = album
-                model.playerMode = false
-                model.fetchAlbumSongs()
-
-            },
-            elevation = 4.dp,
-        ) {
-            Row(modifier            = Modifier.padding(10.dp)) {
-                Column(modifier            = Modifier.padding(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Heading(title)
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Subheading(text     = artist,
-                            modifier = Modifier.align(Alignment.CenterStart))
-
-                    }
-                }
-                Image(bitmap = albumImage, contentDescription = "")
-            }
-
-        }
-    }
-}
 
 @Composable
-fun LibSearchFab(model: FreezerModel){
+fun LibSearchFAB(model: FreezerModel){
 
     Column(
         verticalArrangement = Arrangement.Center,

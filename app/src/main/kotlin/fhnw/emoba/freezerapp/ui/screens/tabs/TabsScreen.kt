@@ -11,7 +11,7 @@ import fhnw.emoba.freezerapp.model.FreezerModel
 import fhnw.emoba.freezerapp.model.Screen
 import fhnw.emoba.freezerapp.model.Tab
 import fhnw.emoba.freezerapp.ui.screens.*
-import fhnw.emoba.freezerapp.ui.screens.Bar
+
 
 
 @Composable
@@ -68,17 +68,5 @@ private fun Body(model: FreezerModel){
 }
 
 
-
-
-
-
-
-
-
-
-@Composable
-fun Bar(title: String) {
-    TopAppBar(title = { Text(title) })
-}
 
 

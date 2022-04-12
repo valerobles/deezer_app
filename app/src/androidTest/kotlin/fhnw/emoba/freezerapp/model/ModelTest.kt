@@ -63,11 +63,11 @@ internal class ModelTest {
     @Test
     fun testAddRemoveFavorite() {
 
-     assertTrue(model.favoriteSongs.isEmpty() )
+     assertTrue(model.listOfFavoriteSongs.isEmpty() )
      assertEquals(false, song.liked)
      model.addRemoveFavorite(song)
      assertEquals(true, song.liked)
-     assertNotNull(model.favoriteSongs.isNotEmpty())
+     assertNotNull(model.listOfFavoriteSongs.isNotEmpty())
      model.addRemoveFavorite(song)
      assertEquals(false, song.liked)
 

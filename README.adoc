@@ -31,3 +31,5 @@ Anforderungen:
 * Das Deezer-Logo muss an prominenter Stelle sichtbar sein (Vorgabe aus den Lizenzbedingungen)
 * Weitere Libraries als die, die im Unterricht verwendet wurden, sind nicht erlaubt.
 
+![Alt text](app/src/main/res/drawable-xhdpi/deezerlogo.png?raw=true "Title")
+

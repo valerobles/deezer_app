@@ -4,16 +4,6 @@
 
 * Valeria Robles Garzon
 
-=== Abgabe
-
-* Klasse 6iCbb, Dienstag, 12.04.2022, 8:00 Uhr
-
-Die Abgabe erfolgt durch ein "Push" auf den Master-Branch Ihres GitHub-Repositories.
-
-=== Initiale Schritte
-
-* Tragen Sie ihren Namen unter "Bearbeitet von" ein.
-* Pushen Sie diese Änderung am besten sofort ins Git-Repository (z.B. via "VCS -> Commit… -> Commit&Push")
 
 === Die Aufgabe: MusicPlayer für Deezer
 
@@ -41,22 +31,3 @@ Anforderungen:
 * Das Deezer-Logo muss an prominenter Stelle sichtbar sein (Vorgabe aus den Lizenzbedingungen)
 * Weitere Libraries als die, die im Unterricht verwendet wurden, sind nicht erlaubt.
 
-
-=== Bewertung
-
-Es können in diesem Assignment maximal 4 Punkte erreicht werden. Der Fokus liegt dabei, neben der Umsetzung der gewünschten Funktionalität, auf der Code-Qualität. Der Coolness-Faktor der Applikation wird über den Coolest App Award berücksichtigt.
-
-* 4 Punkte
-** Umsetzung der gesamten gewünschten Funktionalität und der oben genannten Grundanforderungen
-** Strukturierung der App in 3 Layer
-** UI Code ist klar strukturiert in unabhängige Screens und via Composable Functions.
-** TestCases für ViewModels, Data Klassen und Services
-* 1 Punkt
-** Ein Song wird via Deezer-API bezogen, der Titel des Songs und des Interpreten werden angezeigt. Der Song kann abgespielt und pausiert werden.
-* 0 Punkte
-** falls die Kriterien für einen Punkt nicht erfüllt sind ;-)
-** falls das Deezer-API nicht verwendet wird
-*** die Song-Informationen wie Titel und Preview-URL müssen via API (unter `https://api.deezer.com/`) bezogen werden
-** falls das Projekt nicht kompilierfähig ist
-** falls die App direkt beim Aufstarten abstürzt
-** für Plagiate
